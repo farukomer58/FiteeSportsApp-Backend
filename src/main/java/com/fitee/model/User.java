@@ -1,15 +1,21 @@
 package com.fitee.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "UserType")
 
 @Entity()
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "UserType")
+@Data
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -23,72 +29,50 @@ public class User {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", unique = true, nullable = false)
     private String email;
+
+    @Column(name = "PHONE")
+    private String phone;
 
     @Column(name = "PASSWORD")
     private String password;
+
+//    @Column(name = "LOCKED")
+//    private boolean locked;
+
+    @Column(name = "BIRTH_DATE")
+    @CreationTimestamp                      // LocalDateTime when created
+    private LocalDateTime birthDate;
 
     @Column(name = "CREATED_DATE")
     @CreationTimestamp                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
-    public User() {
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ROLE_ID")
+    @JsonIgnore
+    private RoleEntity role;
 
-    public Long getId() {
-        return id;
-    }
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "CUSTOMER_ID")
+//    private Customer customer;
+//
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "FREELANCER_ID")
+//    private Freelancer freelancer;
 
-    public String getFirstName() {
-        return firstName;
-    }
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+//    private Set<ChatEntity> chatMessages = new HashSet<>();
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", createdDate=" + createdDate +
-                '}';
-    }
+    /**
+     * Convenience method to add a single chat-message
+     */
+//    public void addChatMessage(ChatEntity chatMessage, UserEntity receiver) {
+//        this.chatMessages.add(chatMessage);
+//        chatMessage.setSender(this);
+//        chatMessage.setReceiver(receiver);
+//        chatMessage.setConversationId(this.getId(), receiver.getId());
+//    }
 }
