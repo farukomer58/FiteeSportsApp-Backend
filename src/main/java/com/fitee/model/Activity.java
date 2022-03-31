@@ -1,5 +1,8 @@
 package com.fitee.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -9,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity()
+@Data
+@NoArgsConstructor
 public class Activity {
 
     @Id
@@ -35,8 +41,17 @@ public class Activity {
     @CreationTimestamp                                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
+    @ManyToOne
+    @JoinColumn(name = "OWNER_ID")
+    private User owner;
+
+    @ManyToMany()
+    @JoinTable(name = "ACTIVITY_PARTICIPANT", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
+    @JoinColumn(name = "PARTICIPANT_ID"))
+    @JsonIgnore
+    private List<User> participant = new ArrayList<User>();
+
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
     private List<Review> reviews = new ArrayList<Review>();
-
 
 }

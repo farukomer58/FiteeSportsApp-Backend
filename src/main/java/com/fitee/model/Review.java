@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Entity()
 @Data
 @NoArgsConstructor
@@ -24,6 +25,7 @@ public class Review {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "ACTIVITY_ID")
     private Activity activity;
 
 }

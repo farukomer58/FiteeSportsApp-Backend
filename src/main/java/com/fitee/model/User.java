@@ -7,7 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -53,6 +55,12 @@ public class User {
     @JoinColumn(name = "ROLE_ID")
     @JsonIgnore
     private RoleEntity role;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Activity> activityList = new ArrayList<Activity>();
+
+    @ManyToMany(mappedBy = "participant") //, fetch = FetchType.EAGER
+    private List<Activity> joinedActivities = new ArrayList<Activity>();
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "CUSTOMER_ID")
