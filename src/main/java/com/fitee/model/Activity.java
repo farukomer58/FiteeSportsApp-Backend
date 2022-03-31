@@ -2,13 +2,12 @@ package com.fitee.model;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Activity {
 
@@ -33,7 +32,11 @@ public class Activity {
     private BigDecimal price;
 
     @Column(name = "CREATED_DATE")
-    @CreationTimestamp                      // LocalDateTime when created
+    @CreationTimestamp                                      // LocalDateTime when created
     private LocalDateTime createdDate;
+
+    @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
+    private List<Review> reviews = new ArrayList<Review>();
+
 
 }
