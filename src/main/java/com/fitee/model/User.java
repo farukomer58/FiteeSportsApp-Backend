@@ -1,6 +1,7 @@
 package com.fitee.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fitee.dto.RoleEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -49,10 +50,8 @@ public class User {
     @CreationTimestamp                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ROLE_ID")
-    @JsonIgnore
-    private RoleEntity role;
+    @Enumerated(EnumType.STRING) //EnumType.ORDINAL is default like index of the value
+    private RoleEnum role;
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "CUSTOMER_ID")
