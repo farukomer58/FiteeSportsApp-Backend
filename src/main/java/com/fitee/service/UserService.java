@@ -6,22 +6,27 @@ import com.fitee.model.User;
 import com.fitee.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 //Encoding
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
-    private static final String EMAIL_SUBJECT = "Activeer je account";
-    private static final String FROM_ADDRESS = "info@vanstreek.nl";
+    private static final String EMAIL_SUBJECT = "Activate Account";
+    private static final String FROM_ADDRESS = "info@fitee.nl";
     private static final String HOST_ADDRESS = "http://localhost:4200";
-    private static final String HEROKU_ADDRESS = "https://vanstreek2-fe-app-staging.herokuapp.com";
+    private static final String HEROKU_ADDRESS = "";
+
+    // Dependencies
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+//    private final BCryptPasswordEncoder byCryptPasswordEncoder;
 //    private final JavaMailSender javaMailSender;
 //    private final JwtProvider jwtProvider;
 
@@ -34,7 +39,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ResourceAlreadyExistsException("An existing resource was found");
         }
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 //        user.setLocked(false);
         return userRepository.save(user);
     }

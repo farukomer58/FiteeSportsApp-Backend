@@ -2,14 +2,11 @@ package com.fitee.controller;
 
 
 import com.fitee.dto.RegistrationResponse;
-import com.fitee.model.RoleType;
 import com.fitee.model.User;
 import com.fitee.repository.UserRepository;
 import com.fitee.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -24,9 +21,11 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+//    private final JwtProvider jwtProvider;
+
 
     /**
-     * Registers a new user in the database and sends a verification email.
+     * POST: Registers a new user in the database and sends a verification email.
      */
     @PostMapping("/register")
     public RegistrationResponse registerUser(@RequestBody User user) throws MessagingException {
@@ -34,12 +33,28 @@ public class UserController {
 //        newUser.setLocked(true);
 //        String jwtToken = jwtProvider.createVerifyingToken(newUser.getUsername());
 //        userService.sendVerifyingEmail(user, jwtToken);
-        return new RegistrationResponse(newUser.getFirstName(), "User successfully registered");
+        return new RegistrationResponse(newUser.getEmail(), "User successfully registered");
     }
 
+    /**
+     * GET: Get all users
+     */
     @GetMapping("")
     public List<User> getAllUsers(){
         return userRepository.findAll();
+    }
+
+    /**
+     * GET: Get SINGLE user by ID
+     */
+    @GetMapping("")
+    public User getUserById(){
+        return userRepository.findById(1l).get();
+    }
+
+    @PostMapping("/login")
+    public boolean loginUser(){
+        return true;
     }
 
 //    /**

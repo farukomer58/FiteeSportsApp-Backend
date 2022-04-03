@@ -45,13 +45,14 @@ public class Activity {
     @JoinColumn(name = "OWNER_ID")
     private User owner;
 
+    @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
+    private List<Review> reviews = new ArrayList<Review>();
+
     @ManyToMany()
     @JoinTable(name = "ACTIVITY_PARTICIPANT", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
     private List<User> participant = new ArrayList<User>();
 
-    @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
-    private List<Review> reviews = new ArrayList<Review>();
 
 }

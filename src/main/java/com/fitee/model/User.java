@@ -1,6 +1,7 @@
 package com.fitee.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fitee.dto.Address;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,6 +41,9 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
+//    @Embedded //It doesnt create new table for Address
+//    private Address address;
+
 //    @Column(name = "LOCKED")
 //    private boolean locked;
 
@@ -57,10 +61,15 @@ public class User {
     private RoleEntity role;
 
     @OneToMany(mappedBy = "owner")
-    private List<Activity> activityList = new ArrayList<Activity>();
+    private List<Activity> ownedActivities = new ArrayList<Activity>();
 
     @ManyToMany(mappedBy = "participant") //, fetch = FetchType.EAGER
     private List<Activity> joinedActivities = new ArrayList<Activity>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    // Default is EAGER and this automatically join profile when user is requested, can lead to performance issues
+    @JoinColumn(name = "PROFILE_ID")
+    private Profile profile;
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "CUSTOMER_ID")
