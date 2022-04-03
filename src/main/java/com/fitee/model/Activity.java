@@ -45,6 +45,10 @@ public class Activity {
     @JoinColumn(name = "OWNER_ID")
     private User owner;
 
+    @ManyToOne
+    @JoinColumn(name = "ACTIVITY_TYPE_ID")
+    private ActivityType activityType;
+
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
     private List<Review> reviews = new ArrayList<Review>();
 

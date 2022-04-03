@@ -47,7 +47,7 @@ public class UserController {
     /**
      * GET: Get SINGLE user by ID
      */
-    @GetMapping("")
+    @GetMapping(":id")
     public User getUserById(){
         return userRepository.findById(1l).get();
     }
