@@ -30,6 +30,16 @@ public class ActivityController {
         return activityService.searchAll();
     }
 
+
+    /**
+     * Creates a new product in the database.
+     */
+//    @Secured(RoleType.SUPPLIER)
+    @PostMapping
+    public void createProduct(@RequestBody ObjectNode queryMap) {
+        activityService.save(queryMap);
+    }
+
     /**
      * Retrieves a single product based on its given id.
      */

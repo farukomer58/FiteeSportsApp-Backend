@@ -53,7 +53,7 @@ public class UserService {
 //        var principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        return userRepository.findByIdWithSupplier(principal.getId())
 //                .orElseThrow(() -> new ResourceNotFoundException("Current user not found in database."));
-        return userRepository.findByRole(2l);
+        return userRepository.findById(2l).get();
     }
 
 //    /**

@@ -78,7 +78,7 @@ public class ActivityService {
         activity.setCreatedDate(LocalDateTime.now());
 
 
-        System.out.println("Product added, The final Product: ");
+        System.out.println("Activity added, The final Product: ");
         System.out.println(activity);
         return activityRepository.save(activity);
     }

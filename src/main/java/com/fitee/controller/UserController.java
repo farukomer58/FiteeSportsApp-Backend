@@ -16,7 +16,7 @@ import java.util.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
@@ -52,9 +52,9 @@ public class UserController {
         return userRepository.findById(1l).get();
     }
 
-    @PostMapping("/login")
-    public boolean loginUser(){
-        return true;
+    @GetMapping("/login")
+    public String loginUser(){
+        return "";
     }
 
 //    /**
