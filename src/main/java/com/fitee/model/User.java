@@ -2,6 +2,7 @@ package com.fitee.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fitee.dto.Address;
+import com.fitee.dto.UserRole;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,9 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "UserType")
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "UserType")
 @Entity()
 @Data
 @NoArgsConstructor
@@ -44,8 +44,8 @@ public class User {
 //    @Embedded //It doesnt create new table for Address
 //    private Address address;
 
-//    @Column(name = "LOCKED")
-//    private boolean locked;
+    @Column(name = "LOCKED") // Account Status
+    private boolean locked;
 
     @Column(name = "BIRTH_DATE")
     @CreationTimestamp                      // LocalDateTime when created
@@ -55,21 +55,15 @@ public class User {
     @CreationTimestamp                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ROLE_ID")
-    @JsonIgnore
-    private RoleEntity role;
+    @Column(name = "USER_ROLE", nullable=true)
+    @Enumerated(EnumType.STRING) //EnumType.ORDINAL is default like index of the value
+    private UserRole userRole;
 
     @OneToMany(mappedBy = "owner")
     private List<Activity> ownedActivities = new ArrayList<Activity>();
 
     @ManyToMany(mappedBy = "participant") //, fetch = FetchType.EAGER
     private List<Activity> joinedActivities = new ArrayList<Activity>();
-
-    @OneToOne(fetch = FetchType.LAZY)
-    // Default is EAGER and this automatically join profile when user is requested, can lead to performance issues
-    @JoinColumn(name = "PROFILE_ID")
-    private Profile profile;
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "CUSTOMER_ID")

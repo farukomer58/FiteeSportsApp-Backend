@@ -1,44 +1,25 @@
 package com.fitee;
 
-import com.fitee.model.RoleEntity;
-import com.fitee.model.User;
 import com.fitee.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Slf4j
 @SpringBootApplication
-public class DemoApplication implements CommandLineRunner {
+public class DemoApplication  {
 
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    EntityManager em;
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    @Override
-    @Transactional
-    public void run(String... args) throws Exception {
 
-//        TypedQuery<RoleEntity> customerRole = em.createQuery("SELECT r FROM RoleEntity r", RoleEntity.class);
-        RoleEntity roleEntity = em.find(RoleEntity.class, 1l);
-        log.info("All Customer with Customer Role : {}", roleEntity.getUsers());
-
-    }
 
 
 //	@Bean
