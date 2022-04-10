@@ -10,9 +10,7 @@ import java.util.List;
 @Entity
 public class Customer extends User {
 
-//    @Embedded //It doesnt create new table for Address
-//    private Address address;
-
+    @Column(name = "ADDRESS")
     private String address;
 
     @Embedded

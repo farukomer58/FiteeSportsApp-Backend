@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Inheritance(strategy = InheritanceType.JOINED)
-//@DiscriminatorColumn(name = "UserType")
 @Entity()
 @Data
 @NoArgsConstructor

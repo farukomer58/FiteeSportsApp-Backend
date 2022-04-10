@@ -7,6 +7,7 @@ import java.util.List;
 @Entity
 public class Freelancer extends User {
 
+    @Column(name = "LESSON_TYPE")
     private String lessonType;
 
     @OneToMany(mappedBy = "owner")
