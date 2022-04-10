@@ -52,11 +52,16 @@ public class Activity {
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
     private List<Review> reviews = new ArrayList<Review>();
 
+    @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many lOGS
+    private List<LessonLog> logs = new ArrayList<LessonLog>();
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy="activity") // Add variable name of ChatGroup, ChatGroup is the owning side of relationship
+    private ChatGroup chatGroup;
+
     @ManyToMany()
     @JoinTable(name = "ACTIVITY_PARTICIPANT", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
     private List<Customer> participant = new ArrayList<Customer>();
-
 
 }

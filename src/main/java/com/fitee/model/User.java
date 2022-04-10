@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "UserType")
@@ -46,6 +48,12 @@ public class User {
     @Column(name = "USER_ROLE", nullable=true)
     @Enumerated(EnumType.STRING) //EnumType.ORDINAL is default like index of the value
     private UserRole userRole;
+
+    @OneToMany(mappedBy = "messageOwner")
+    private List<ChatMessage> messages = new ArrayList<ChatMessage>();
+
+    @ManyToMany(mappedBy = "groupMember") //, fetch = FetchType.EAGER
+    private List<ChatGroup> joinedChatGroups = new ArrayList<ChatGroup>();
 
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
