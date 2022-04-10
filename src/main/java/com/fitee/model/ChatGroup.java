@@ -18,7 +18,7 @@ public class ChatGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ACTIVITY_ID")
+//    @Column(name = "ACTIVITY_ID")
     @OneToOne(fetch = FetchType.LAZY)
     private Activity activity;
 

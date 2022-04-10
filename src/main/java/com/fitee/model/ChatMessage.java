@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity()
 @Data
@@ -17,6 +18,9 @@ public class ChatMessage {
 
     @Column(name = "MESSAGE")
     private String message;
+
+    @Column(name = "DATE_CREATED")
+    private Date createdDate = new Date(System.currentTimeMillis());
 
     @ManyToOne
     @JoinColumn(name = "MESSAGE_OWNER")

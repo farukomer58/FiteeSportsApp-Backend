@@ -50,11 +50,13 @@ public class User {
     private UserRole userRole;
 
     @OneToMany(mappedBy = "messageOwner")
-    private List<ChatMessage> messages = new ArrayList<ChatMessage>();
+    private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
     @ManyToMany(mappedBy = "groupMember") //, fetch = FetchType.EAGER
     private List<ChatGroup> joinedChatGroups = new ArrayList<ChatGroup>();
 
+    @OneToMany(mappedBy = "bookedBy")                       // One User Has / Can have Many Bookings
+    private List<Booking> bookings = new ArrayList<Booking>();
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "CUSTOMER_ID")
@@ -71,10 +73,10 @@ public class User {
     /**
      * Convenience method to add a single chat-message
      */
-//    public void addChatMessage(ChatEntity chatMessage, UserEntity receiver) {
-//        this.chatMessages.add(chatMessage);
-//        chatMessage.setSender(this);
-//        chatMessage.setReceiver(receiver);
+    public void addChatMessage(ChatMessage chatMessage, ChatGroup receiver) {
+        this.chatMessages.add(chatMessage);
+        chatMessage.setMessageOwner(this);
+        chatMessage.setChatGroup(receiver);
 //        chatMessage.setConversationId(this.getId(), receiver.getId());
-//    }
+    }
 }

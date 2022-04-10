@@ -49,6 +49,9 @@ public class Activity {
 //    @JoinColumn(name = "ACTIVITY_TYPE_ID")
 //    private ActivityType activityType;
 
+    @OneToMany(mappedBy = "bookedActivity")                       // One User Has / Can have Many Bookings
+    private List<Booking> bookings = new ArrayList<Booking>();
+
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
     private List<Review> reviews = new ArrayList<Review>();
 
