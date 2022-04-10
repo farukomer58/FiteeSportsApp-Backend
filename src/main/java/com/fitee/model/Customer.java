@@ -18,7 +18,7 @@ public class Customer extends User {
     @Embedded
     private BankAccount bankDetails;
 
-    @ManyToMany(mappedBy = "participant") //, fetch = FetchType.EAGER
+    @ManyToMany(mappedBy = "participants") //, fetch = FetchType.EAGER
     private List<Activity> joinedActivities = new ArrayList<Activity>();
 
     public Customer() {

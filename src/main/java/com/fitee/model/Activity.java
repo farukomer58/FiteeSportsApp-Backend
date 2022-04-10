@@ -49,7 +49,11 @@ public class Activity {
 //    @JoinColumn(name = "ACTIVITY_TYPE_ID")
 //    private ActivityType activityType;
 
-    @OneToMany(mappedBy = "bookedActivity")                       // One User Has / Can have Many Bookings
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "activity")
+    // Add variable name of ChatGroup, ChatGroup is the owning side of relationship
+    private ChatGroup chatGroup;
+
+    @OneToMany(mappedBy = "bookedActivity")                       // One Activity Has / Can have Many Bookings
     private List<Booking> bookings = new ArrayList<Booking>();
 
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many Reviews
@@ -58,13 +62,26 @@ public class Activity {
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many lOGS
     private List<LessonLog> logs = new ArrayList<LessonLog>();
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy="activity") // Add variable name of ChatGroup, ChatGroup is the owning side of relationship
-    private ChatGroup chatGroup;
-
     @ManyToMany()
     @JoinTable(name = "ACTIVITY_PARTICIPANT", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
-    private List<Customer> participant = new ArrayList<Customer>();
+    private List<Customer> participants = new ArrayList<Customer>();
 
+
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
+
+    public void addLog(LessonLog log) {
+        this.logs.add(log);
+    }
+
+    public void addParticipant(Customer participant) {
+        this.participants.add(participant);
+    }
 }
