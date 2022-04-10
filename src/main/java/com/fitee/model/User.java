@@ -1,21 +1,14 @@
 package com.fitee.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fitee.dto.Address;
-import com.fitee.dto.UserRole;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "UserType")
+@Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn(name = "UserType")
 @Entity()
 @Data
 @NoArgsConstructor
@@ -23,7 +16,8 @@ public class User {
 
     @Id
     @Column(name = "USER_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @Column(name = "FIRST_NAME")
@@ -35,14 +29,8 @@ public class User {
     @Column(name = "EMAIL", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "PHONE")
-    private String phone;
-
     @Column(name = "PASSWORD")
     private String password;
-
-//    @Embedded //It doesnt create new table for Address
-//    private Address address;
 
     @Column(name = "LOCKED") // Account Status
     private boolean locked;
@@ -59,11 +47,6 @@ public class User {
     @Enumerated(EnumType.STRING) //EnumType.ORDINAL is default like index of the value
     private UserRole userRole;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Activity> ownedActivities = new ArrayList<Activity>();
-
-    @ManyToMany(mappedBy = "participant") //, fetch = FetchType.EAGER
-    private List<Activity> joinedActivities = new ArrayList<Activity>();
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "CUSTOMER_ID")

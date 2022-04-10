@@ -1,15 +1,9 @@
 package com.fitee.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fitee.dto.ActivityDto;
 import com.fitee.model.Activity;
-import com.fitee.model.ActivityType;
-import com.fitee.repository.ActivityTypeRepository;
 import com.fitee.service.ActivityService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -20,7 +14,6 @@ import java.util.*;
 public class ActivityController {
 
     private final ActivityService activityService;
-    private final ActivityTypeRepository activityTypeRepository;
 
     /**
      * Retrieves all activities and returns them as a page object to support pagination.
@@ -70,10 +63,10 @@ public class ActivityController {
     /**
      * Retrieves all product categories.
      */
-    @GetMapping("/categories")
-    public List<ActivityType> getProductCategories() {
-        return activityTypeRepository.findAll();
-    }
+//    @GetMapping("/categories")
+//    public List<ActivityType> getProductCategories() {
+//        return activityTypeRepository.findAll();
+//    }
 
 
 }

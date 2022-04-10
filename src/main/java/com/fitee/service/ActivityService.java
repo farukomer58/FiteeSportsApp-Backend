@@ -7,7 +7,6 @@ import com.fitee.exception.ResourceNotFoundException;
 import com.fitee.model.Activity;
 import com.fitee.model.User;
 import com.fitee.repository.ActivityRepository;
-import com.fitee.repository.ActivityTypeRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ public class ActivityService {
     private final EntityManager entityManager;
     private final ActivityRepository activityRepository;
     //    private final ModelMapper modelmapper;
-    private final ActivityTypeRepository activityTypeRepository;
     private final UserService userService;
 //    private final ImageRepository imageRepository;
 //    private final DiscountPriceRepository discountPriceRepository;
@@ -74,7 +72,7 @@ public class ActivityService {
 //        product.setDescription(queryMap.get("description").asText());
 
         User user = userService.getCurrentUser();
-        activity.setOwner(user);
+//        activity.setOwner(user);
         activity.setCreatedDate(LocalDateTime.now());
 
 
