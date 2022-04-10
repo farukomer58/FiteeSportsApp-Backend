@@ -71,14 +71,17 @@ public class Activity {
 
     public void addBooking(Booking booking) {
         this.bookings.add(booking);
+        booking.setBookedActivity(this);
     }
 
     public void addReview(Review review) {
         this.reviews.add(review);
+        review.setActivity(this);
     }
 
     public void addLog(LessonLog log) {
         this.logs.add(log);
+        log.setActivity(this);
     }
 
     public void addParticipant(Customer participant) {

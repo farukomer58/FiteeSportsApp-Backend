@@ -21,7 +21,18 @@ public class Customer extends User {
     @ManyToMany(mappedBy = "participants") //, fetch = FetchType.EAGER
     private List<Activity> joinedActivities = new ArrayList<Activity>();
 
+    @OneToMany(mappedBy = "bookedBy")                       // One User Has / Can have Many Bookings
+    private List<Booking> bookings = new ArrayList<Booking>();
+
     public Customer() {
 
+    }
+
+    public boolean joinActivity(Activity activity) {
+        return this.joinedActivities.add(activity);
+    }
+
+    public boolean addBooking(Booking booking) {
+        return this.bookings.add(booking);
     }
 }

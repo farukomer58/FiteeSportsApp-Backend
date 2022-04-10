@@ -19,4 +19,9 @@ public class Freelancer extends User {
     public Freelancer() {
 
     }
+
+    public void createActivity(Activity newActivity) {
+        this.ownedActivities.add(newActivity);
+        newActivity.setOwner(this);
+    }
 }

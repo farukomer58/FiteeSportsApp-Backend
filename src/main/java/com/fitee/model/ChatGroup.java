@@ -18,7 +18,7 @@ public class ChatGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "ACTIVITY_ID")
+    //    @Column(name = "ACTIVITY_ID")
     @OneToOne(fetch = FetchType.LAZY)
     private Activity activity;
 
@@ -29,6 +29,17 @@ public class ChatGroup {
     @JoinTable(name = "CHAT_GROUP_MEMBER", joinColumns = @JoinColumn(name = "GROUP_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
-    private List<User> groupMember = new ArrayList<User>();
+    private List<User> groupMembers = new ArrayList<User>();
 
+    public void addGroupMessage(ChatMessage groupMessage) {
+        this.groupMessages.add(groupMessage);
+    }
+
+    public void addGroupMember(User newUser) {
+        this.groupMembers.add(newUser);
+    }
+
+    public boolean removeGroupMember(User groupMember) {
+        return this.groupMembers.remove(groupMember);
+    }
 }

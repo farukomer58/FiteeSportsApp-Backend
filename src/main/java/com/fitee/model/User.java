@@ -45,30 +45,19 @@ public class User {
     @CreationTimestamp                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
-    @Column(name = "USER_ROLE", nullable=true)
+    @Column(name = "USER_ROLE", nullable = true)
     @Enumerated(EnumType.ORDINAL) //EnumType.ORDINAL is default like index of the value
     private UserRole userRole;
 
     @OneToMany(mappedBy = "messageOwner")
     private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
-    @ManyToMany(mappedBy = "groupMember") //, fetch = FetchType.EAGER
+    @ManyToMany(mappedBy = "groupMembers") //, fetch = FetchType.EAGER
     private List<ChatGroup> joinedChatGroups = new ArrayList<ChatGroup>();
 
-    @OneToMany(mappedBy = "bookedBy")                       // One User Has / Can have Many Bookings
-    private List<Booking> bookings = new ArrayList<Booking>();
-
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "CUSTOMER_ID")
-//    private Customer customer;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "FREELANCER_ID")
-//    private Freelancer freelancer;
-
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-//    private Set<ChatEntity> chatMessages = new HashSet<>();
+    public void joinGroup(ChatGroup chatGroup) {
+        this.joinedChatGroups.add(chatGroup);
+    }
 
     /**
      * Convenience method to add a single chat-message
