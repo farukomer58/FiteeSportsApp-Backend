@@ -46,7 +46,7 @@ public class User {
     private LocalDateTime createdDate;
 
     @Column(name = "USER_ROLE", nullable=true)
-    @Enumerated(EnumType.STRING) //EnumType.ORDINAL is default like index of the value
+    @Enumerated(EnumType.ORDINAL) //EnumType.ORDINAL is default like index of the value
     private UserRole userRole;
 
     @OneToMany(mappedBy = "messageOwner")

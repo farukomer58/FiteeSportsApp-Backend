@@ -51,6 +51,9 @@ public class UserController {
         return userRepository.findById(1l).get();
     }
 
+    /**
+     * POST: Login user, check credentials
+     */
     @GetMapping("/login")
     public String loginUser(){
         return "";
