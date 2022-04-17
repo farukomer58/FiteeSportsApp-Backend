@@ -1,5 +1,6 @@
 package com.fitee.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.JOINED)
 @Entity()
 @Data
 @NoArgsConstructor
@@ -17,8 +18,7 @@ public class User {
 
     @Id
     @Column(name = "USER_ID")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "FIRST_NAME")
@@ -33,8 +33,8 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "LOCKED") // Account Status
-    private boolean locked;
+    @Column(name = "LOCKED") // Account Status 0=unlocked, 1=locked
+    private Integer locked = 1;
 
     @Column(name = "BIRTH_DATE")
     @CreationTimestamp                      // LocalDateTime when created
@@ -44,14 +44,17 @@ public class User {
     @CreationTimestamp                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
-    @Column(name = "USER_ROLE", nullable = true)
-    @Enumerated(EnumType.ORDINAL) //EnumType.ORDINAL is default like index of the value
-    private UserRole userRole;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ROLE_ID")
+    @JsonIgnore
+    private RoleEntity role;
 
     @OneToMany(mappedBy = "messageOwner")
+    @JsonIgnore
     private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
     @ManyToMany(mappedBy = "groupMembers") //, fetch = FetchType.EAGER
+    @JsonIgnore
     private List<ChatGroup> joinedChatGroups = new ArrayList<ChatGroup>();
 
     public void joinGroup(ChatGroup chatGroup) {

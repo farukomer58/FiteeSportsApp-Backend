@@ -43,7 +43,7 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "OWNER_ID")
-    private Freelancer owner;
+    private User owner;
 
 //    @ManyToOne
 //    @JoinColumn(name = "ACTIVITY_TYPE_ID")
@@ -66,7 +66,7 @@ public class Activity {
     @JoinTable(name = "ACTIVITY_PARTICIPANT", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
-    private List<Customer> participants = new ArrayList<Customer>();
+    private List<User> participants = new ArrayList<User>();
 
 
     public void addBooking(Booking booking) {
@@ -84,7 +84,7 @@ public class Activity {
         log.setActivity(this);
     }
 
-    public void addParticipant(Customer participant) {
+    public void addParticipant(User participant) {
         this.participants.add(participant);
     }
 }
