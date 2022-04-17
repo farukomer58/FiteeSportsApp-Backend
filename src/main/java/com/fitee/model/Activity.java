@@ -75,6 +75,14 @@ public class Activity {
     @JsonIgnore
     private List<User> participants = new ArrayList<User>();
 
+    @ManyToMany()
+    @JoinTable(name = "ACTIVITY_CATEGORY", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
+    @JoinColumn(name = "CATEGORY_ID"))
+    @JsonIgnore
+    private List<Category> categories = new ArrayList<Category>();
+
+
+
 
     public void addBooking(Booking booking) {
         this.bookings.add(booking);

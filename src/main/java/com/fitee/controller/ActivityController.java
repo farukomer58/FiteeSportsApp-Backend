@@ -2,7 +2,9 @@ package com.fitee.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fitee.model.Activity;
+import com.fitee.model.Category;
 import com.fitee.model.User;
+import com.fitee.repository.CategoryRepository;
 import com.fitee.service.ActivityService;
 import com.fitee.service.UserService;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,8 @@ public class ActivityController {
 
     private final ActivityService activityService;
     private final UserService userService;
+    private final CategoryRepository categoryRepository;
+
 
     /**
      * Retrieves all activities and returns them as a page object to support pagination.
@@ -32,16 +36,16 @@ public class ActivityController {
     }
 
     /**
-     * Creates a new activity in the database.
+     * POST: Creates a new activity in the database.
      */
-//    @Secured(RoleType.SUPPLIER)
+    //@Secured(RoleType.SUPPLIER)
     @PostMapping
     public void createActivity(@RequestBody ObjectNode queryMap) {
         activityService.save(queryMap);
     }
 
     /**
-     * Retrieves a single activity based on its given id.
+     * GET: Retrieves a single activity based on its given id.
      */
     @GetMapping("/{id}")
     public Activity getActivity(@PathVariable long id) {
@@ -50,32 +54,37 @@ public class ActivityController {
     }
 
     /**
-     * Deletes a single activity based on its given id.
+     * PUT: Updates a single product based on its given id.
      */
-//    @Secured(RoleType.SUPPLIER)
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable long id) {
-        activityService.deleteById(id);
-    }
-
-    /**
-     * Updates a single product based on its given id.
-     */
-//    @Secured(RoleType.SUPPLIER)
+    //@Secured(RoleType.SUPPLIER)
     @PutMapping("/{id}")
     public void update(@PathVariable long id, @RequestBody ObjectNode product) {
         activityService.update(id, product);
     }
 
     /**
-     * Retrieves all product categories.
-     *
-     * @return
+     * DELETE: Deletes a single activity based on its given id.
      */
-//    @GetMapping("/categories")
-//    public List<ActivityType> getProductCategories() {
-//        return activityTypeRepository.findAll();
-//    }
+    //@Secured(RoleType.SUPPLIER)
+    @DeleteMapping("/{id}")
+    public void deleteActivity(@PathVariable long id) {
+        activityService.deleteById(id);
+    }
+
+    /**
+     * Retrieves all activity categories.
+     *
+     * @return All Categories
+     */
+    @GetMapping("/categories")
+    public List<Category> getActivityCategories() {
+        return categoryRepository.findAll();
+    }
+
+
+
+
+
     @GetMapping("/userActivities")
     public List<Activity> getUserActivity() {
         User user = userService.getCurrentUser();
