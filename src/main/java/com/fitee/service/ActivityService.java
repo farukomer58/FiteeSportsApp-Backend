@@ -14,10 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -26,25 +23,31 @@ import java.util.*;
 @Transactional
 public class ActivityService {
 
-    private final EntityManager entityManager;
     private final ActivityRepository activityRepository;
-    //    private final ModelMapper modelmapper;
     private final UserService userService;
+
 //    private final ImageRepository imageRepository;
+//    private final ModelMapper modelmapper;
 //    private final DiscountPriceRepository discountPriceRepository;
 
 
+    /**
+     * Find a activity by ID
+     *
+     * @return The activities in pageable form
+     */
     public Page<Activity> searchAll(Map<String, String> queryMap, Pageable pageable) {
         var productPage = activityRepository.findAll(new ActivitySpecification(queryMap), pageable);
         return productPage.map((Activity activity) -> {
             return activity;
         });
     }
+
     /**
-     * Find a product by ID
+     * Find a activity by ID
      *
      * @param id The id of the activity you want
-     * @return The found product
+     * @return The found activity
      */
     public Activity findById(long id) {
         return activityRepository.findById(id).orElseThrow(() ->
@@ -57,15 +60,14 @@ public class ActivityService {
      * @param id The id of the product
      */
     public void deleteById(long id) {
-        // TODO: allow only product removals belonging to user.
+        // TODO: allow only activity removals belonging to user.
         activityRepository.deleteById(id);
     }
 
     /**
-     * Create and Save the product to the database, we also check for a Product Image if provided
-     * And also Product Discounnt if provided
+     * Create and Save the acitivity to the database,
      *
-     * @param queryMap The JSON productData received From the Frontend / User
+     * @param queryMap The JSON activityData received From the Frontend / User
      */
     public Activity save(ObjectNode queryMap) {
 
@@ -92,11 +94,11 @@ public class ActivityService {
     }
 
     /**
-     * Update and Save a Prodcut By Id
+     * Update Activity By Id
      *
-     * @param id      the product ID
-     * @param product The updated Product values
-     * @return The updated Product
+     * @param id      the activity ID
+     * @param product The updated Activity values
+     * @return The updated Activity
      */
     public Activity update(long id, ObjectNode product) {
 
@@ -122,6 +124,5 @@ public class ActivityService {
         // Return the updated Product
         return activityRepository.save(newUpdatedActivity);
     }
-
 
 }

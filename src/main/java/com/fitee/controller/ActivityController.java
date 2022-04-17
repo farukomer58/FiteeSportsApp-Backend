@@ -32,16 +32,16 @@ public class ActivityController {
     }
 
     /**
-     * Creates a new product in the database.
+     * Creates a new activity in the database.
      */
 //    @Secured(RoleType.SUPPLIER)
     @PostMapping
-    public void createProduct(@RequestBody ObjectNode queryMap) {
+    public void createActivity(@RequestBody ObjectNode queryMap) {
         activityService.save(queryMap);
     }
 
     /**
-     * Retrieves a single product based on its given id.
+     * Retrieves a single activity based on its given id.
      */
     @GetMapping("/{id}")
     public Activity getActivity(@PathVariable long id) {
@@ -50,7 +50,7 @@ public class ActivityController {
     }
 
     /**
-     * Deletes a single product based on its given id.
+     * Deletes a single activity based on its given id.
      */
 //    @Secured(RoleType.SUPPLIER)
     @DeleteMapping("/{id}")
