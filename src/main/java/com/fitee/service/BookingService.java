@@ -11,13 +11,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class BookingService {
 
-
     private final BookingRepository bookingRepository;
+    private final UserService userService;
 
     /**
      * Create and Save the product to the database, we also check for a Product Image if provided
@@ -32,6 +33,13 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    /**
+     * Get All bookings for the signed in User
+     * */
+    public List<Booking> getAllUserBookings() {
+        final User currentUser = userService.getCurrentUser();
+        return currentUser.getBookings();
+    }
 
     public boolean makePayment() {
         return false;

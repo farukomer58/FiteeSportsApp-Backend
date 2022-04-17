@@ -16,13 +16,12 @@ import java.util.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/activity")
+@RequestMapping("/api/v1/activities")
 public class ActivityController {
 
     private final ActivityService activityService;
     private final UserService userService;
     private final CategoryRepository categoryRepository;
-
 
     /**
      * Retrieves all activities and returns them as a page object to support pagination.

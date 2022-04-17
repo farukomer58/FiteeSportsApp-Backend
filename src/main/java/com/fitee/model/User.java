@@ -72,6 +72,9 @@ public class User {
     @JsonIgnore
     private List<Activity> joinedActivities = new ArrayList<Activity>();
 
+    @OneToMany(mappedBy = "bookedBy")                       // One User Has / Can have Many Bookings
+    private List<Booking> bookings = new ArrayList<Booking>();
+
     public void joinGroup(ChatGroup chatGroup) {
         this.joinedChatGroups.add(chatGroup);
     }
