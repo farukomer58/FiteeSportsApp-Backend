@@ -47,6 +47,10 @@ public class User {
     @CreationTimestamp                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private Profile profile;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_ID")
     @JsonIgnore

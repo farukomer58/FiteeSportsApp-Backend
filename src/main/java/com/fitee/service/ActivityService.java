@@ -30,7 +30,6 @@ public class ActivityService {
 //    private final ModelMapper modelmapper;
 //    private final DiscountPriceRepository discountPriceRepository;
 
-
     /**
      * Find a activity by ID
      *
