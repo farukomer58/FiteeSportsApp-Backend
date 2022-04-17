@@ -2,7 +2,9 @@ package com.fitee.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,7 +14,8 @@ import java.util.List;
 
 //@Inheritance(strategy = InheritanceType.JOINED)
 @Entity()
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User {
 
@@ -57,8 +60,20 @@ public class User {
     @JsonIgnore
     private List<ChatGroup> joinedChatGroups = new ArrayList<ChatGroup>();
 
+    @OneToMany(mappedBy = "owner")
+    @JsonIgnore
+    private List<Activity> ownedActivities = new ArrayList<Activity>();
+
+    @ManyToMany(mappedBy = "participants") //, fetch = FetchType.EAGER
+    @JsonIgnore
+    private List<Activity> joinedActivities = new ArrayList<Activity>();
+
     public void joinGroup(ChatGroup chatGroup) {
         this.joinedChatGroups.add(chatGroup);
+    }
+
+    public void addOwnedActivities(Activity ownedActivity) {
+        this.ownedActivities.add(ownedActivity);
     }
 
     /**

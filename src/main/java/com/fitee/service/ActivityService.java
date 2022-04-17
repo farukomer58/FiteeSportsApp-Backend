@@ -7,17 +7,23 @@ import com.fitee.exception.ResourceNotFoundException;
 import com.fitee.model.Activity;
 import com.fitee.model.User;
 import com.fitee.repository.ActivityRepository;
+import com.fitee.search.ActivitySpecification;
 import lombok.AllArgsConstructor;
+import lombok.var;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class ActivityService {
 
     private final EntityManager entityManager;
@@ -28,10 +34,12 @@ public class ActivityService {
 //    private final DiscountPriceRepository discountPriceRepository;
 
 
-    public List<Activity> searchAll() {
-        return activityRepository.findAll();
+    public Page<Activity> searchAll(Map<String, String> queryMap, Pageable pageable) {
+        var productPage = activityRepository.findAll(new ActivitySpecification(queryMap), pageable);
+        return productPage.map((Activity activity) -> {
+            return activity;
+        });
     }
-
     /**
      * Find a product by ID
      *
@@ -65,15 +73,17 @@ public class ActivityService {
 
         activity.setTitle(queryMap.get("title").asText());
         activity.setPrice(queryMap.get("price").decimalValue());
-//        product.setQuantity(queryMap.get("stock").asDouble());
+        activity.setCreatedDate(LocalDateTime.now());
+
+        //        product.setQuantity(queryMap.get("stock").asDouble());
 //        product.setUnit(queryMap.get("unit").asText());
 //        long categoryId = Long.parseLong(queryMap.get("category").asText());
 //        product.addProductCategory(productCategoryRepository.getOne(categoryId));
 //        product.setDescription(queryMap.get("description").asText());
 
         User user = userService.getCurrentUser();
-//        activity.setOwner(user);
-        activity.setCreatedDate(LocalDateTime.now());
+        activity.setOwner(user);
+        // user.addOwnedActivities(activity); Not necessary
 
 
         System.out.println("Activity added, The final Product: ");

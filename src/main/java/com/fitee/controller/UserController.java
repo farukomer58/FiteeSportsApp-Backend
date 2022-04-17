@@ -27,22 +27,17 @@ public class UserController {
     private final UserRepository userRepository;
 //    private final JwtProvider jwtProvider;
 
-
     /**
      * GET: Get all users
      */
     @GetMapping("")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    public List<User> getAllUsers() { return userRepository.findAll(); }
 
     /**
      * GET: Get SINGLE user by ID
      */
     @GetMapping("{id}")
-    public User getUserById(@PathVariable long id) {
-        return userRepository.findById(id).get();
-    }
+    public User getUserById(@PathVariable long id) { return userRepository.findById(id).get(); }
 
     /**
      * POST: Registers a new user in the database and sends a verification email.
@@ -53,8 +48,9 @@ public class UserController {
     public ResponseEntity<Object> registerUser(@RequestBody User user) throws MessagingException {
         User newUser = userService.registerUser(user);
         newUser.setLocked(1);
-//        String jwtToken = jwtProvider.createVerifyingToken(newUser.getUsername());
-//        userService.sendVerifyingEmail(user, jwtToken);
+
+        // String jwtToken = jwtProvider.createVerifyingToken(newUser.getUsername());
+        // userService.sendVerifyingEmail(user, jwtToken);
 
         // Current Request URI creation
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/users/{id}").buildAndExpand(newUser.getId()).toUri();
@@ -68,10 +64,17 @@ public class UserController {
     /**
      * POST: Login user, check credentials
      */
-    @GetMapping("/login")
+    @PostMapping("/login")
     public String loginUser() {
-        return "";
+        return "Hello";
     }
+
+
+
+
+
+
+
 
 //    /**
 //     * Retrieves current context user-info.
