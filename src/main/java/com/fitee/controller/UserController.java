@@ -31,7 +31,10 @@ public class UserController {
      * GET: Get all users
      */
     @GetMapping("")
-    public List<User> getAllUsers() { return userRepository.findAll(); }
+    public List<User> getAllUsers() {
+        System.out.println("I WANT ALL USERS ");
+        return userRepository.findAll();
+    }
 
     /**
      * GET: Get SINGLE user by ID
@@ -66,41 +69,9 @@ public class UserController {
      */
     @PostMapping("/login")
     public String loginUser() {
-        return "Hello";
+        return "";
     }
 
 
-
-
-
-
-
-
-//    /**
-//     * Retrieves current context user-info.
-//     */
-//    @Secured({RoleType.SUPPLIER, RoleType.CUSTOMER})
-//    @GetMapping("/me")
-//    public UserResponse getUserInfo() {
-//        UserEntity user = userService.getCurrentUser();
-//        return new UserResponse(user);
-//    }
-//
-//    /**
-//     * Verifies an user by token.
-//     */
-//    @GetMapping("/verify")
-//    public ResponseEntity verifyUser(@RequestParam String token) {
-//        userService.verifyUser(token);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
-//
-//    /**
-//     * Retrieves account locked status by username.
-//     */
-//    @GetMapping("/info/{username}")
-//    public boolean getUserFromUsername(@PathVariable String username) {
-//        return this.userRepository.findByUsername(username).get().isLocked();
-//    }
 
 }
