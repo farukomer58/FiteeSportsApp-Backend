@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static junit.framework.TestCase.assertEquals;
@@ -24,10 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = DemoApplication.class)
 public class UserEntityTest {
 
-
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private UserService userService;
 
+    /** Check if retrieved user has right attributes */
     @Test
     public void checkFirstUserEmailCorrectness() {
         User user = userService.findById(1l);
@@ -51,6 +54,19 @@ public class UserEntityTest {
             // Check if the exception message is as expected
             Assertions.assertEquals("User not found with id: " + nonExistingSupplierId, e.getMessage());
         }
+    }
+
+    @Test
+    @DirtiesContext // restores values
+    void updateUserTest() {
+        //Get Course
+        User user = userService.findById(1l);
+        // Update
+        user.setFirstName("New First Name");
+        userRepository.save(user);
+        // check the value
+        User updatedUser = userService.findById(1l);
+        assertEquals("New First Name",updatedUser.getFirstName());
     }
 
 
