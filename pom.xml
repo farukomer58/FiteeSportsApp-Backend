@@ -97,6 +97,14 @@
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-security</artifactId>-->
 <!--        </dependency>-->
+<!--        <properties>-->
+<!--            <sonar.qualitygate.wait>true</sonar.qualitygate.wait>-->
+<!--        </properties>-->
+        <dependency>
+            <groupId>io.github.r0bb3n</groupId>
+            <artifactId>sonar-quality-gate-maven-plugin</artifactId>
+            <version>1.2.1</version>
+        </dependency>
 
 
     </dependencies>
