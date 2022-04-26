@@ -14,8 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Omer Citik
@@ -43,22 +42,24 @@ public class UserEntityTest {
     @Test
     public void returnUserThatDoesNotExist() {
         long nonExistingSupplierId = -1;
-        try {
-            User retrievedUser = userService.findById(nonExistingSupplierId);
-            // If the user is not null fail the test
-            assertNull(retrievedUser);
-        } catch (Exception e) {
-            // Check if the thrown exception is equal to ResourceNotFoundException if user is not found
-            assertTrue(e.getClass().equals(ResourceNotFoundException.class));
-
-            // Check if the exception message is as expected
-            Assertions.assertEquals("User not found with id: " + nonExistingSupplierId, e.getMessage());
-        }
+        final ResourceNotFoundException resourceNotFoundException = assertThrows(ResourceNotFoundException.class,
+                () -> userService.findById(nonExistingSupplierId));
+//        try {
+//            User retrievedUser = userService.findById(nonExistingSupplierId);
+//            // If the user is not null fail the test
+//            assertNull(retrievedUser);
+//        } catch (Exception e) {
+//            // Check if the thrown exception is equal to ResourceNotFoundException if user is not found
+//            assertTrue(e.getClass().equals(ResourceNotFoundException.class));
+//
+//            // Check if the exception message is as expected
+            Assertions.assertEquals("User not found with id: ",resourceNotFoundException.getMessage());
+//        }
     }
 
     @Test
     @DirtiesContext // restores values
-    void updateUserTest() {
+    public void updateUserTest() {
         //Get Course
         User user = userService.findById(1l);
         // Update
