@@ -69,7 +69,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public String loginUser() {
-        return "";
+        return "login";
     }
 
 
