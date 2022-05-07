@@ -4,6 +4,7 @@ package com.fitee.controller;
 import com.fitee.dto.RegistrationResponse;
 import com.fitee.model.User;
 import com.fitee.repository.UserRepository;
+import com.fitee.security.jwt.JwtProvider;
 import com.fitee.service.UserService;
 import lombok.AllArgsConstructor;
 
@@ -25,7 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
-//    private final JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
     /**
      * GET: Get all users

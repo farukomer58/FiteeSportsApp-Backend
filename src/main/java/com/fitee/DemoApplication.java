@@ -37,17 +37,6 @@ public class DemoApplication  {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 
-			// TODO: create all test data via schema.sql + data.sql instead of here
-			// -----------------------------------------------------
-
-
-
-//			String[] beanNames = ctx.getBeanDefinitionNames();
-//			Arrays.sort(beanNames);
-//			for (String beanName : beanNames) {
-//				System.out.println(beanName);
-//			}
-
 
 		};
 	}

@@ -6,7 +6,7 @@ import com.fitee.exception.ResourceNotFoundException;
 import com.fitee.model.User;
 import com.fitee.repository.UserRepository;
 import lombok.AllArgsConstructor;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,7 +18,7 @@ public class UserService {
 
     // Dependencies
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 //    private final JavaMailSender javaMailSender;
 //    private final JwtProvider jwtProvider;
 
@@ -40,7 +40,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ResourceAlreadyExistsException("An existing resource was found");
         }
-        // user.setPassword(passwordEncoder.encode(user.getPassword()));
+         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setLocked(0);
 
         User save = userRepository.save(user);
