@@ -1,6 +1,7 @@
 package com.fitee.config;//package com.fitee.config;
 
 import com.fitee.exception.handlers.FilterExceptionHandler;
+import com.fitee.security.jwt.JwtFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true) // enables @Secured(role)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
     private final CorsFilter corsFilter;
     private final FilterExceptionHandler filterExceptionHandler;
 
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(filterExceptionHandler, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(corsFilter, ChannelProcessingFilter.class)
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .anyRequest().permitAll();
     }

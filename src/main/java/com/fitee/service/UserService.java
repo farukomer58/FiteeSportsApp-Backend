@@ -5,6 +5,7 @@ import com.fitee.exception.ResourceAlreadyExistsException;
 import com.fitee.exception.ResourceNotFoundException;
 import com.fitee.model.User;
 import com.fitee.repository.UserRepository;
+import com.fitee.security.jwt.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 //    private final JavaMailSender javaMailSender;
-//    private final JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
     /**
      * Retrieves the supplier-info with a given supplier-id. If not found throws a

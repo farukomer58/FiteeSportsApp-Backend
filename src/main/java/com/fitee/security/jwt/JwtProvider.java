@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
@@ -36,7 +37,7 @@ public class JwtProvider {
                 .setExpiration(generateExpirationTime(accessExpTime, false))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .claim("userId", user.getId())
-                .claim("role", user.getRole().getId())
+                .claim("role", user.getRole())
                 .signWith(SignatureAlgorithm.HS256, generateSigningKey())
                 .compact();
     }
@@ -122,6 +123,8 @@ public class JwtProvider {
             return e;
         }
     }
+
+
 }
 
 //    public Map<?, ?> readTokenClaims(String token) throws JsonProcessingException {

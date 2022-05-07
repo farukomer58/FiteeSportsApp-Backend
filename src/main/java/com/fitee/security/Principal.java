@@ -1,5 +1,6 @@
 package com.fitee.security;
 
+import com.fitee.model.RoleEntity;
 import com.fitee.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.lang.Collections;
@@ -17,10 +18,10 @@ public class Principal extends User implements UserDetails {
 
     public Principal(Claims claims) {
         this.claims = claims;
-        super.setId(((Number) claims.get("uid")).longValue());
+        super.setId(((Number) claims.get("userId")).longValue());
         super.setEmail(claims.getSubject());
         super.setPassword(""); // no pw available from claims
-//        super.setRole(claims.get("roles"));
+        super.setRole((RoleEntity) claims.get("role"));
     }
 
     public Principal(User user) {

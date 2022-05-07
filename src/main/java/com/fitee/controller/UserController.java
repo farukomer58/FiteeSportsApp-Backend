@@ -53,7 +53,7 @@ public class UserController {
         User newUser = userService.registerUser(user);
         newUser.setLocked(1);
 
-        // String jwtToken = jwtProvider.createVerifyingToken(newUser.getUsername());
+//         String jwtToken = jwtProvider.createVerifyingToken(newUser.getEmail());
         // userService.sendVerifyingEmail(user, jwtToken);
 
         // Current Request URI creation
@@ -72,7 +72,6 @@ public class UserController {
     public String loginUser() {
         return "login";
     }
-
 
 
 }
