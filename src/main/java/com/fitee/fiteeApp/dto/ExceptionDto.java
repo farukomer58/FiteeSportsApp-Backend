@@ -1,4 +1,4 @@
-package com.fitee.fiteeApp.dao;
+package com.fitee.fiteeApp.dto;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

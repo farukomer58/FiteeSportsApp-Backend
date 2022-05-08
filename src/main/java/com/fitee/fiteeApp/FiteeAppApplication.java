@@ -29,14 +29,14 @@ public class FiteeAppApplication {
             userService.saveRole(new RoleEntity(null, "CUSTOMER"));
             userService.saveRole(new RoleEntity(null, "FREELANCER"));
 
-            userService.saveUser(new User("John", "I dont know", "myEmail@email.com", "password"));
-            userService.saveUser(new User("saddas", "kasan", "myEmail2@email.com", "password"));
-            userService.saveUser(new User("hasan", "Basan", "myEmail3@email.com", "password"));
+            userService.saveUser(new User("John", "I dont know", "myEmail@email.com", "password","CUSTOMER"));
+            userService.saveUser(new User("saddas", "kasan", "myEmail2@email.com", "password","CUSTOMER"));
+            userService.saveUser(new User("hasan", "Basan", "myEmail3@email.com", "password","FREELANCER"));
 
-            userService.addRoleToUser("myEmail@email.com", "CUSTOMER");
-            userService.addRoleToUser("myEmail@email.com", "FREELANCER");
-            userService.addRoleToUser("myEmail2@email.com", "CUSTOMER");
-            userService.addRoleToUser("myEmail3@email.com", "FREELANCER");
+//            userService.addRoleToUser("myEmail@email.com", "CUSTOMER");
+//            userService.addRoleToUser("myEmail@email.com", "FREELANCER");
+//            userService.addRoleToUser("myEmail2@email.com", "CUSTOMER");
+//            userService.addRoleToUser("myEmail3@email.com", "FREELANCER");
         };
     }
 }

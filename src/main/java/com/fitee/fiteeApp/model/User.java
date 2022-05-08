@@ -55,6 +55,9 @@ public class User {
     @JsonIgnore
     private Profile profile;
 
+    @Column(name = "USER_ROLE")
+    private String userRole;
+
     @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "ROLE_ID")
 //    @JsonIgnore
@@ -83,11 +86,12 @@ public class User {
     private List<Booking> bookings = new ArrayList<Booking>();
 
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email, String password, String userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.userRole = userRole;
     }
 
     /** ----------------------------------------------------------------------------------------------- */

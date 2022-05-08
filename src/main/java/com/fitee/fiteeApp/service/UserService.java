@@ -1,5 +1,6 @@
 package com.fitee.fiteeApp.service;
 
+import com.fitee.fiteeApp.exception.ResourceNotFoundException;
 import com.fitee.fiteeApp.model.RoleEntity;
 import com.fitee.fiteeApp.model.User;
 import com.fitee.fiteeApp.repository.RoleRepository;
@@ -8,6 +9,7 @@ import com.fitee.fiteeApp.service.construction.UserServiceInterface;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -54,6 +56,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public User saveUser(User user) {
         log.info("Saving new user with email {} to the database", user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        RoleEntity userRoleEntity = roleRepository.findByName(user.getUserRole());
+        user.getRoles().add(userRoleEntity);
+
         return userRepository.save(user);
     }
 
@@ -85,6 +91,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
 
     public User getCurrentUser() {
-        return userRepository.findById(1l).get();
+        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = getUserByMail((String) principal);
+        return currentUser;
+        //        return userRepository.findById(principal.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Current user not found in database."));
     }
 }

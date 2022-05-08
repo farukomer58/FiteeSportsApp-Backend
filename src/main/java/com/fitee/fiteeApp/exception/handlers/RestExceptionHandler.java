@@ -1,6 +1,6 @@
 package com.fitee.fiteeApp.exception.handlers;
 
-import com.fitee.fiteeApp.dao.ExceptionDto;
+import com.fitee.fiteeApp.dto.ExceptionDto;
 import com.fitee.fiteeApp.exception.ExpiredTokenException;
 import com.fitee.fiteeApp.exception.ResourceAlreadyExistsException;
 import org.springframework.http.HttpStatus;
