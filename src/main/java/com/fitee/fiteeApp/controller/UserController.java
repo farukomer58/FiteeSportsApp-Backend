@@ -41,6 +41,14 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    /**
+     * Retrieves User-info with the given supplier-id.
+     */
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable long id) {
+        return userService.findById(id);
+    }
+
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {
         return ResponseEntity.ok().body(userService.getCurrentUser());
@@ -52,8 +60,6 @@ public class UserController {
                 ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(location).body(userService.saveUser(user));
     }
-
-
 
 
 

@@ -89,12 +89,15 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         return userRepository.findAll();
     }
 
-
     public User getCurrentUser() {
         final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = getUserByMail((String) principal);
         return currentUser;
         //        return userRepository.findById(principal.getId())
 //                .orElseThrow(() -> new ResourceNotFoundException("Current user not found in database."));
+    }
+
+    public User findById(long id) {
+        return userRepository.findById(id).get();
     }
 }

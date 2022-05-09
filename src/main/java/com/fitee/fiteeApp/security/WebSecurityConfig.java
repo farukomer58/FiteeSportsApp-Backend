@@ -39,7 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/api/v*/users/register").permitAll()
+                .antMatchers("/api/v*/users/**").permitAll()
+//                .antMatchers("/api/v*/users/").permitAll()
 //                .antMatchers("/").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated(); // Any other request other then the above mentioned should be authenticated
