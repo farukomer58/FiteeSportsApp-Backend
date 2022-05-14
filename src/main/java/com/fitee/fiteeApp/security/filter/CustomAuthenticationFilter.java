@@ -3,8 +3,11 @@ package com.fitee.fiteeApp.security.filter;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fitee.fiteeApp.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,9 +36,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
+    private UserService userService;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @Override
@@ -60,6 +65,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                             FilterChain chain, Authentication authResult) throws IOException,
             ServletException {
         User user = (User) authResult.getPrincipal();
+        com.fitee.fiteeApp.model.User fullUser = userService.getUserByMail(user.getUsername());
         Algorithm algorithm = Algorithm.HMAC256("SecretKey".getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
@@ -75,7 +81,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
 //        String tokenAlso =
-//                Jwts.builder().setClaims(claims).setSubject(user.getUsername()).setIssuedAt(new Date(System.currentTimeMillis()))
+//                Jwts.builder().setClaims(claims).setSubject(user.getUsername()).setIssuedAt(new Date(System
+//                .currentTimeMillis()))
 //                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
 //                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
 
@@ -88,8 +95,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //        response.setHeader("access_token", access_token);
 //        response.setHeader("refresh_token", refresh_token);
         Map<String, String> tokens = new HashMap<>();
+        tokens.put("user_id", String.valueOf(fullUser.getId()));
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
+        tokens.put("expiresIn", new Date(System.currentTimeMillis() + 10000000 * 60 * 1000).toString());
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }

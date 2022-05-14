@@ -42,10 +42,12 @@ public class UserController {
     }
 
     /**
-     * Retrieves User-info with the given supplier-id.
+     * Retrieves User-info with the given user-id.
      */
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable long id) {
+    @GetMapping("/get")
+    public User getUserById(@RequestParam long id) {
+        System.out.println("Get me the userrrr with id: " + id);
+        final User byId = userService.findById(id);
         return userService.findById(id);
     }
 
@@ -56,14 +58,10 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-        URI location =
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
+        System.out.println("Yo Registering");
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(location).body(userService.saveUser(user));
     }
-
-
-
-
     @PostMapping("/role/save")
     public ResponseEntity<RoleEntity> saveRole(@RequestBody RoleEntity role) {
         URI location =

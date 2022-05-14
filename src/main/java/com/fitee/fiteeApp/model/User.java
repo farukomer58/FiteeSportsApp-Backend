@@ -80,7 +80,7 @@ public class User {
 
     @ManyToMany(mappedBy = "participants") //, fetch = FetchType.EAGER
     @JsonIgnore
-    private List<Activity> joinedActivities = new ArrayList<Activity>();
+    private List<ActivityDate> joinedActivities = new ArrayList<ActivityDate>();
 
     @OneToMany(mappedBy = "bookedBy")                       // One User Has / Can have Many Bookings
     private List<Booking> bookings = new ArrayList<Booking>();

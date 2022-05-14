@@ -1,17 +1,23 @@
 package com.fitee.fiteeApp.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fitee.fiteeApp.dto.ActivityDateDto;
 import com.fitee.fiteeApp.model.Activity;
+import com.fitee.fiteeApp.model.ActivityDate;
 import com.fitee.fiteeApp.model.Category;
 import com.fitee.fiteeApp.model.User;
 import com.fitee.fiteeApp.repository.CategoryRepository;
+import com.fitee.fiteeApp.service.ActivityDateService;
 import com.fitee.fiteeApp.service.ActivityService;
 import com.fitee.fiteeApp.service.UserService;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +27,7 @@ import java.util.Map;
 public class ActivityController {
 
     private final ActivityService activityService;
+    private final ActivityDateService activityDateService;
     private final UserService userService;
     private final CategoryRepository categoryRepository;
 
@@ -36,21 +43,21 @@ public class ActivityController {
     }
 
     /**
-     * POST: Creates a new activity in the database.
-     */
-    //@Secured(RoleType.SUPPLIER)
-    @PostMapping
-    public void createActivity(@RequestBody ObjectNode queryMap) {
-        activityService.save(queryMap);
-    }
-
-    /**
      * GET: Retrieves a single activity based on its given id.
      */
     @GetMapping("/{id}")
     public Activity getActivity(@PathVariable long id) {
         Activity activity = activityService.findById(id);
         return activity;
+    }
+
+    /**
+     * POST: Creates a new activity in the database.
+     */
+    //@Secured(RoleType.SUPPLIER)
+    @PostMapping
+    public void createActivity(@RequestBody ObjectNode queryMap) {
+        activityService.save(queryMap);
     }
 
     /**
@@ -81,6 +88,15 @@ public class ActivityController {
         return categoryRepository.findAll();
     }
 
+
+    @PostMapping("/addDate")
+    public ActivityDate addActivityDate(@RequestBody ActivityDateDto activityDateDto, @RequestParam long activityId) {
+
+        System.out.println(activityDateDto.getDate());
+
+        final ActivityDate save = activityDateService.save(activityId, activityDateDto);
+        return save;
+    }
 
     @GetMapping("/userActivities")
     public List<Activity> getUserActivity() {
