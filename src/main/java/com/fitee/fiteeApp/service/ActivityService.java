@@ -1,11 +1,16 @@
 package com.fitee.fiteeApp.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.fitee.fiteeApp.exception.ResourceNotFoundException;
 import com.fitee.fiteeApp.model.Activity;
+import com.fitee.fiteeApp.model.ActivityPrice;
+import com.fitee.fiteeApp.model.Category;
 import com.fitee.fiteeApp.model.User;
+import com.fitee.fiteeApp.repository.ActivityPriceRepository;
 import com.fitee.fiteeApp.repository.ActivityRepository;
+import com.fitee.fiteeApp.repository.CategoryRepository;
 import com.fitee.fiteeApp.search.ActivitySpecification;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,8 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +29,8 @@ import java.util.Map;
 public class ActivityService {
 
     private final ActivityRepository activityRepository;
+    private final ActivityPriceRepository activityPriceRepository;
+    private final CategoryRepository categoryRepository;
     private final UserService userService;
 
 //    private final ImageRepository imageRepository;
@@ -71,10 +80,31 @@ public class ActivityService {
         Activity activity = new Activity();
 
         activity.setTitle(queryMap.get("title").asText());
-        activity.setPrice(queryMap.get("price").decimalValue());
         activity.setCreatedDate(LocalDateTime.now());
 
-        //        product.setQuantity(queryMap.get("stock").asDouble());
+        for (JsonNode prices : queryMap.get("prices")) {
+            System.out.println(prices);
+
+            final JsonNode lessons = prices.get("lessons");
+            final JsonNode price = prices.get("price");
+            final JsonNode discount = prices.get("discount");
+            ActivityPrice activityPrice = new ActivityPrice(Integer.valueOf(lessons.asInt()),
+                    BigDecimal.valueOf(price.asDouble()), BigDecimal.valueOf(discount.asDouble()));
+            final ActivityPrice savedActivityPrice = activityPriceRepository.save(activityPrice);
+
+            activity.getActivityPrices().add(savedActivityPrice);
+        }
+
+        if(!queryMap.get("categories").isNull()){
+            for (JsonNode category: queryMap.get("categories")){
+                final Category categoryToAdd = categoryRepository.findById(category.get(0).asLong()).get();
+                activity.getCategories().add(categoryToAdd);
+                categoryToAdd.getActivities().add(activity);
+            }
+        }
+
+
+//        product.setQuantity(queryMap.get("stock").asDouble());
 //        product.setUnit(queryMap.get("unit").asText());
 //        long categoryId = Long.parseLong(queryMap.get("category").asText());
 //        product.addProductCategory(productCategoryRepository.getOne(categoryId));
@@ -104,7 +134,8 @@ public class ActivityService {
 
         // Set the values of the product
         newUpdatedActivity.setTitle(product.get("title").asText());
-        newUpdatedActivity.setPrice(product.get("price").decimalValue());
+
+        System.out.println(product.get("prices"));
 //        newUpdatedProduct.setQuantity(product.get("stock").asDouble());
 //        newUpdatedProduct.setUnit(product.get("unit").asText());
 //        long categoryId = Long.parseLong(product.get("category").asText());

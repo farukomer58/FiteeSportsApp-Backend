@@ -29,15 +29,6 @@ public class Activity {
     @Column(name = "DESCRIPTION")
     private String description;
 
-//    @Column(name = "UNIT")
-//    private String unit;
-//
-//    @Column(name = "QUANTITY")
-//    private Double quantity;
-
-    @Column(name = "PRICE")
-    private BigDecimal price;
-
     @Column(name = "CREATED_DATE")
     @CreationTimestamp                                      // LocalDateTime when created
     private LocalDateTime createdDate;
@@ -48,11 +39,16 @@ public class Activity {
     private User owner;
 
     @OneToMany(mappedBy = "activity")
-    private List<ActivityDate> activityDates =  new ArrayList<>();
+    private List<ActivityPrice> activityPrices = new ArrayList<>();
 
-//    @ManyToOne
-//    @JoinColumn(name = "ACTIVITY_TYPE_ID")
-//    private ActivityType activityType;
+    @OneToMany(mappedBy = "activity")
+    private List<ActivityDate> activityDates = new ArrayList<>();
+
+    @ManyToMany()
+    @JoinTable(name = "ACTIVITY_CATEGORY", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
+    @JoinColumn(name = "CATEGORY_ID"))
+    @JsonIgnore
+    private List<Category> categories = new ArrayList<Category>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "activity")
     // Add variable name of ChatGroup, ChatGroup is the owning side of relationship
@@ -69,12 +65,6 @@ public class Activity {
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many lOGS
     @JsonIgnore
     private List<LessonLog> logs = new ArrayList<LessonLog>();
-
-    @ManyToMany()
-    @JoinTable(name = "ACTIVITY_CATEGORY", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
-    @JoinColumn(name = "CATEGORY_ID"))
-    @JsonIgnore
-    private List<Category> categories = new ArrayList<Category>();
 
     public void addBooking(Booking booking) {
         this.bookings.add(booking);

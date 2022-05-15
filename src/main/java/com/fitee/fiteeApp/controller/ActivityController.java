@@ -9,15 +9,16 @@ import com.fitee.fiteeApp.model.User;
 import com.fitee.fiteeApp.repository.CategoryRepository;
 import com.fitee.fiteeApp.service.ActivityDateService;
 import com.fitee.fiteeApp.service.ActivityService;
+import com.fitee.fiteeApp.service.CategoryService;
 import com.fitee.fiteeApp.service.UserService;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class ActivityController {
 
     private final ActivityService activityService;
     private final ActivityDateService activityDateService;
+    private final CategoryService categoryService;
     private final UserService userService;
     private final CategoryRepository categoryRepository;
 
@@ -56,8 +58,12 @@ public class ActivityController {
      */
     //@Secured(RoleType.SUPPLIER)
     @PostMapping
-    public void createActivity(@RequestBody ObjectNode queryMap) {
-        activityService.save(queryMap);
+    public ResponseEntity<Activity> createActivity(@RequestBody ObjectNode queryMap) {
+        final Activity savedActivity = activityService.save(queryMap);
+
+        URI location =
+                ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/activities/{id}").buildAndExpand(savedActivity.getId()).toUri();
+        return ResponseEntity.created(location).body(savedActivity);
     }
 
     /**
@@ -101,7 +107,6 @@ public class ActivityController {
     @GetMapping("/userActivities")
     public List<Activity> getUserActivity() {
         User user = userService.getCurrentUser();
-
         return user.getOwnedActivities();
     }
 
