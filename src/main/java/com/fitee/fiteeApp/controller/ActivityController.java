@@ -2,12 +2,12 @@ package com.fitee.fiteeApp.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fitee.fiteeApp.dto.ActivityDateDto;
+import com.fitee.fiteeApp.exception.ResourceNotFoundException;
 import com.fitee.fiteeApp.model.Activity;
 import com.fitee.fiteeApp.model.ActivityDate;
 import com.fitee.fiteeApp.model.Category;
 import com.fitee.fiteeApp.model.User;
 import com.fitee.fiteeApp.repository.CategoryRepository;
-import com.fitee.fiteeApp.service.ActivityDateService;
 import com.fitee.fiteeApp.service.ActivityService;
 import com.fitee.fiteeApp.service.CategoryService;
 import com.fitee.fiteeApp.service.UserService;
@@ -28,7 +28,6 @@ import java.util.Map;
 public class ActivityController {
 
     private final ActivityService activityService;
-    private final ActivityDateService activityDateService;
     private final CategoryService categoryService;
     private final UserService userService;
     private final CategoryRepository categoryRepository;
@@ -41,8 +40,14 @@ public class ActivityController {
                                  @RequestParam(value = "page", required = false) Integer page,
                                  @RequestParam(value = "size", required = false) Integer size,
                                  Pageable pageable) {
-        return activityService.searchAll(queryMap, pageable);
+        final Page<Activity> activities = activityService.searchAll(queryMap, pageable);
+        return activities;
     }
+
+    /**
+     * Retrieves all activities of the logged in User
+     */
+
 
     /**
      * GET: Retrieves a single activity based on its given id.
@@ -97,10 +102,8 @@ public class ActivityController {
 
     @PostMapping("/addDate")
     public ActivityDate addActivityDate(@RequestBody ActivityDateDto activityDateDto, @RequestParam long activityId) {
-
         System.out.println(activityDateDto.getDate());
-
-        final ActivityDate save = activityDateService.save(activityId, activityDateDto);
+        final ActivityDate save = activityService.saveActivityDate(activityId, activityDateDto);
         return save;
     }
 

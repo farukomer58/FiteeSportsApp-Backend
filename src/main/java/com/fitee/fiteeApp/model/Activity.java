@@ -33,6 +33,16 @@ public class Activity {
     @CreationTimestamp                                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
+    @Column(name="COVER_IMAGE")
+    private String coverImage;
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private ImageEntity activityImage;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "activity")
+    // Add variable name of ChatGroup, ChatGroup is the owning side of relationship
+    private ChatGroup chatGroup;
+
     @ManyToOne
     @JoinColumn(name = "OWNER_ID")
     @JsonIgnore
@@ -47,12 +57,8 @@ public class Activity {
     @ManyToMany()
     @JoinTable(name = "ACTIVITY_CATEGORY", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
     @JoinColumn(name = "CATEGORY_ID"))
-    @JsonIgnore
+//    @JsonIgnore
     private List<Category> categories = new ArrayList<Category>();
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "activity")
-    // Add variable name of ChatGroup, ChatGroup is the owning side of relationship
-    private ChatGroup chatGroup;
 
     @OneToMany(mappedBy = "bookedActivity")                       // One Activity Has / Can have Many Bookings
     @JsonIgnore

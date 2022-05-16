@@ -3,11 +3,10 @@ package com.fitee.fiteeApp.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.fitee.fiteeApp.dto.ActivityDateDto;
 import com.fitee.fiteeApp.exception.ResourceNotFoundException;
-import com.fitee.fiteeApp.model.Activity;
-import com.fitee.fiteeApp.model.ActivityPrice;
-import com.fitee.fiteeApp.model.Category;
-import com.fitee.fiteeApp.model.User;
+import com.fitee.fiteeApp.model.*;
+import com.fitee.fiteeApp.repository.ActivityDateRepository;
 import com.fitee.fiteeApp.repository.ActivityPriceRepository;
 import com.fitee.fiteeApp.repository.ActivityRepository;
 import com.fitee.fiteeApp.repository.CategoryRepository;
@@ -20,8 +19,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +31,7 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final ActivityPriceRepository activityPriceRepository;
+    private final ActivityDateRepository activityDateRepository;
     private final CategoryRepository categoryRepository;
     private final UserService userService;
 
@@ -80,6 +82,7 @@ public class ActivityService {
         Activity activity = new Activity();
 
         activity.setTitle(queryMap.get("title").asText());
+        activity.setDescription(queryMap.get("description").asText());
         activity.setCreatedDate(LocalDateTime.now());
 
         for (JsonNode prices : queryMap.get("prices")) {
@@ -93,27 +96,38 @@ public class ActivityService {
             final ActivityPrice savedActivityPrice = activityPriceRepository.save(activityPrice);
 
             activity.getActivityPrices().add(savedActivityPrice);
+            activityRepository.save(activity);
+            savedActivityPrice.setActivity(activity);
         }
 
-        if(!queryMap.get("categories").isNull()){
-            for (JsonNode category: queryMap.get("categories")){
-                final Category categoryToAdd = categoryRepository.findById(category.get(0).asLong()).get();
+        if (!queryMap.get("categories").isNull()) {
+            for (JsonNode category : queryMap.get("categories")) {
+                final Category categoryToAdd = categoryRepository.findById(category.asLong()).orElseThrow();
                 activity.getCategories().add(categoryToAdd);
                 categoryToAdd.getActivities().add(activity);
             }
         }
 
+        if (!queryMap.get("activityDates").isNull()) {
+            for (JsonNode activityDate : queryMap.get("activityDates")) {
+                ActivityDate activityDateObject = new ActivityDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse(activityDate.get("date").asText(), formatter);
+                activityDateObject.setDate(dateTime);
+                activityDateObject.setMaxParticipants(activityDate.get("maxParticipants").asInt());
+                final ActivityDate savedActivityDate = activityDateRepository.save(activityDateObject);
+                System.out.println(savedActivityDate);
 
-//        product.setQuantity(queryMap.get("stock").asDouble());
-//        product.setUnit(queryMap.get("unit").asText());
-//        long categoryId = Long.parseLong(queryMap.get("category").asText());
-//        product.addProductCategory(productCategoryRepository.getOne(categoryId));
-//        product.setDescription(queryMap.get("description").asText());
+                activity.getActivityDates().add(savedActivityDate);
+                activityRepository.save(activity);
+                savedActivityDate.setActivity(activity);
+            }
+        }
+
 
         User user = userService.getCurrentUser();
         activity.setOwner(user);
-        // user.addOwnedActivities(activity); Not necessary
-
+        user.addOwnedActivities(activity);
 
         System.out.println("Activity added, The final Product: ");
         System.out.println(activity);
@@ -123,34 +137,83 @@ public class ActivityService {
     /**
      * Update Activity By Id
      *
-     * @param id      the activity ID
-     * @param product The updated Activity values
+     * @param id       the activity ID
+     * @param queryMap The updated Activity values
      * @return The updated Activity
      */
-    public Activity update(long id, ObjectNode product) {
+    public Activity update(long id, ObjectNode queryMap) {
 
         // Find the product to update with the ID
         Activity newUpdatedActivity = activityRepository.findById(id).get();
 
-        // Set the values of the product
-        newUpdatedActivity.setTitle(product.get("title").asText());
+        newUpdatedActivity.setTitle(queryMap.get("title").asText());
+        newUpdatedActivity.setDescription(queryMap.get("description").asText());
+        newUpdatedActivity.setCreatedDate(LocalDateTime.now());
 
-        System.out.println(product.get("prices"));
-//        newUpdatedProduct.setQuantity(product.get("stock").asDouble());
-//        newUpdatedProduct.setUnit(product.get("unit").asText());
-//        long categoryId = Long.parseLong(product.get("category").asText());
-//        newUpdatedProduct.addProductCategory(productCategoryRepository.getOne(categoryId));
-//        newUpdatedProduct.setDescription(product.get("description").asText());
+        if (!queryMap.get("prices").isNull()) {
+            for (JsonNode prices : queryMap.get("prices")) {
+                System.out.println(prices);
 
+                final JsonNode lessons = prices.get("lessons");
+                final JsonNode price = prices.get("price");
+                final JsonNode discount = prices.get("discount");
+                ActivityPrice activityPrice = new ActivityPrice(Integer.valueOf(lessons.asInt()),
+                        BigDecimal.valueOf(price.asDouble()), BigDecimal.valueOf(discount.asDouble()));
+                final ActivityPrice savedActivityPrice = activityPriceRepository.save(activityPrice);
 
-        /*
-        ProductEntity currentProduct = entityManager.getReference(ProductEntity.class, id);
-        modelmapper.map(newUpdatedProduct, currentProduct); // new --> updateInto --> current
+                newUpdatedActivity.getActivityPrices().add(savedActivityPrice);
+                activityRepository.save(newUpdatedActivity);
+                savedActivityPrice.setActivity(newUpdatedActivity);
+            }
+        }
 
-        System.out.println(currentProduct);*/
+        if (!queryMap.get("categories").isNull()) {
+            for (JsonNode category : queryMap.get("categories")) {
+                final Category categoryToAdd = categoryRepository.findById(category.asLong()).orElseThrow();
+                newUpdatedActivity.getCategories().add(categoryToAdd);
+                categoryToAdd.getActivities().add(newUpdatedActivity);
+            }
+        }
+
+        if (!queryMap.get("activityDates").isNull()) {
+            for (JsonNode activityDate : queryMap.get("activityDates")) {
+                ActivityDate activityDateObject = new ActivityDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse(activityDate.get("date").asText(), formatter);
+                activityDateObject.setDate(dateTime);
+                activityDateObject.setMaxParticipants(activityDate.get("maxParticipants").asInt());
+                final ActivityDate savedActivityDate = activityDateRepository.save(activityDateObject);
+                System.out.println(savedActivityDate);
+
+                newUpdatedActivity.getActivityDates().add(savedActivityDate);
+                activityRepository.save(newUpdatedActivity);
+                savedActivityDate.setActivity(newUpdatedActivity);
+            }
+        }
 
         // Return the updated Product
         return activityRepository.save(newUpdatedActivity);
     }
 
+    /**
+     * Create and Save the acitivity Date to the database and link with the acititvy,
+     *
+     * @param activityId, date The activityDate received From the Frontend / User
+     */
+    public ActivityDate saveActivityDate(long activityId, ActivityDateDto activityDateDto) {
+
+        Activity activity = activityRepository.findById(activityId).get();
+        ActivityDate activityDate = new ActivityDate();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(activityDateDto.getDate(), formatter);
+        activityDate.setDate(dateTime);
+        activityDate.setMaxParticipants(activityDateDto.getMaxParticipant());
+
+        activity.getActivityDates().add(activityDate);
+        activityDate.setActivity(activity);
+
+        System.out.println("Activity Date added, The final Product: ");
+        return activityDateRepository.save(activityDate);
+    }
 }

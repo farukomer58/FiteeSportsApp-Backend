@@ -16,6 +16,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "QUANTITY")
+    private Long quantity; // Number of tickets/lessons purchased
+
     @Column(name = "BOOKING_DATE")
     private Date createdDate = new Date(System.currentTimeMillis());
 
