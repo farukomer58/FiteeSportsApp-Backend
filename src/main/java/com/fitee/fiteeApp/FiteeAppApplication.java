@@ -26,8 +26,8 @@ public class FiteeAppApplication {
     CommandLineRunner run(UserService userService) {
         return args -> {
 
-            userService.saveRole(new RoleEntity(null, "CUSTOMER"));
-            userService.saveRole(new RoleEntity(null, "FREELANCER"));
+            final RoleEntity customer = userService.saveRole(new RoleEntity(null, "CUSTOMER"));
+            final RoleEntity freelancer = userService.saveRole(new RoleEntity(null, "FREELANCER"));
 
             userService.saveUser(new User("John", "I dont know", "myEmail@email.com", "password","CUSTOMER"));
             userService.saveUser(new User("saddas", "kasan", "myEmail2@email.com", "password","CUSTOMER"));

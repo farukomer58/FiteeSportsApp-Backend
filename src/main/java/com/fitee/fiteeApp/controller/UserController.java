@@ -12,6 +12,7 @@ import com.fitee.fiteeApp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -44,6 +45,7 @@ public class UserController {
     /**
      * Retrieves User-info with the given user-id.
      */
+    @Secured({"ROLE_FREELANCER", "FREELANCER"})
     @GetMapping("/get")
     public User getUserById(@RequestParam long id) {
         System.out.println("Get me the userrrr with id: " + id);

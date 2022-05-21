@@ -12,6 +12,7 @@ import com.fitee.fiteeApp.service.ActivityService;
 import com.fitee.fiteeApp.service.CategoryService;
 import com.fitee.fiteeApp.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/activities")
+@RequestMapping("api/v1/activities")
 public class ActivityController {
 
     private final ActivityService activityService;
@@ -35,7 +36,7 @@ public class ActivityController {
     /**
      * Retrieves all activities and returns them as a page object to support pagination.
      */
-    @GetMapping
+    @GetMapping("")
     public Page<Activity> search(@RequestParam(required = false) Map<String, String> queryMap,
                                  @RequestParam(value = "page", required = false) Integer page,
                                  @RequestParam(value = "size", required = false) Integer size,
@@ -47,7 +48,11 @@ public class ActivityController {
     /**
      * Retrieves all activities of the logged in User
      */
-
+    @GetMapping("/own")
+    public List<Activity> searchOwnActivities() {
+        final List<Activity> activities = activityService.getOwnActivities();
+        return activities;
+    }
 
     /**
      * GET: Retrieves a single activity based on its given id.
@@ -62,7 +67,7 @@ public class ActivityController {
      * POST: Creates a new activity in the database.
      */
     //@Secured(RoleType.SUPPLIER)
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<Activity> createActivity(@RequestBody ObjectNode queryMap) {
         final Activity savedActivity = activityService.save(queryMap);
 

@@ -51,6 +51,11 @@ public class ActivityService {
         });
     }
 
+    public List<Activity> getOwnActivities() {
+        final User currentUser = userService.getCurrentUser();
+        return currentUser.getOwnedActivities();
+    }
+
     /**
      * Find a activity by ID
      *
@@ -216,4 +221,6 @@ public class ActivityService {
         System.out.println("Activity Date added, The final Product: ");
         return activityDateRepository.save(activityDate);
     }
+
+
 }

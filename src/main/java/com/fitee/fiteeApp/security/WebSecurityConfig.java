@@ -8,6 +8,7 @@ import com.fitee.fiteeApp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,9 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
                 .antMatchers("/api/v*/users/**").permitAll()
-//                .antMatchers("/api/v*/users/").permitAll()
-//                .antMatchers("/").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+//                .antMatchers(HttpMethod.GET,"/api/v*/users").hasRole("FREELANCER")
                 .anyRequest().authenticated(); // Any other request other then the above mentioned should be
         // authenticated
         http.addFilterBefore(corsFilter, ChannelProcessingFilter.class);

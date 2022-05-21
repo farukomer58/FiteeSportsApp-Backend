@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -64,7 +65,11 @@ public class User {
     @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns =
     @JoinColumn(name = "ROLE_ID"))
     private List<RoleEntity> roles = new ArrayList<>();
-    //private RoleEntity role;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_PROFESSION", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns =
+    @JoinColumn(name = "PROFESSION_ID"))
+    private List<Profession> professions = new ArrayList<>();
 
     @OneToMany(mappedBy = "messageOwner")
     @JsonIgnore

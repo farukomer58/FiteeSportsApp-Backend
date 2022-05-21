@@ -1,5 +1,6 @@
 package com.fitee.fiteeApp.service;
 
+import com.fitee.fiteeApp.exception.ResourceAlreadyExistsException;
 import com.fitee.fiteeApp.exception.ResourceNotFoundException;
 import com.fitee.fiteeApp.model.RoleEntity;
 import com.fitee.fiteeApp.model.User;
@@ -55,8 +56,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Override
     public User saveUser(User user) {
         log.info("Saving new user with email {} to the database", user.getEmail());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Check whether user with this Email already exist
+        final User byEmail = userRepository.findByEmail(user.getEmail());
+        if (byEmail != null) {
+            throw new ResourceAlreadyExistsException("User with this email already exists");
+        }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         RoleEntity userRoleEntity = roleRepository.findByName(user.getUserRole());
         user.getRoles().add(userRoleEntity);
 
