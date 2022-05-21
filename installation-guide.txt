@@ -1,0 +1,30 @@
+## How to add H2 database in intellij idea ##
+
+pre-requisite: run backend once to create required files in '/resources/database'
+
+------------------------------------------------------------------------
+
+#version 2020.2 or lower
+
+1. click on database (button right side of application)
+2. click on '+'
+3. click 'data source from path'
+4. locate and open 'ewa.mv.db'
+5. new config screen should open now
+6. in url field, append ';AUTO_SERVER=true' to the current url
+7. enter default H2 credentials (username = 'sa', no password)
+8. apply and reload
+
+------------------------------------------------------------------------
+
+#version 2020.3
+
+1. click on database (button right side of application)
+2. click on '+'
+3. select 'Data Source' -> select 'H2'
+4. new config screen should open now
+5. make sure the connection type = 'embedded'
+6. username is 'sa', password is empty
+7. in the url field paste the absolute path of 'ewa.mv.db' (rightclick ewa.mv.db -> copy path -> absolute path)
+8. then append ';AUTO_SERVER=true' to the current url
+9. apply and reload

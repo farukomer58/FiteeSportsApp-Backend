@@ -38,13 +38,6 @@ public class RoleEntity {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "RoleEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
 
 
