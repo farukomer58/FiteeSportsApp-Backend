@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
+@Table(name = "Fitee_ActivityDate")
 public class ActivityDate {
 
     @Id
@@ -35,7 +38,7 @@ public class ActivityDate {
     private Integer maxParticipants;
 
     @ManyToMany()
-    @JoinTable(name = "ACTIVITY_PARTICIPANT", joinColumns = @JoinColumn(name = "ACTIVITY_DATE_ID"), inverseJoinColumns =
+    @JoinTable(name = "FITEE_ACTIVITY_PARTICIPANT", joinColumns = @JoinColumn(name = "ACTIVITY_DATE_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
     private List<User> participants = new ArrayList<User>();

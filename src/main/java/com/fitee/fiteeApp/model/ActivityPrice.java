@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,7 +17,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-
+@ToString
+@Table(name = "Fitee_ActivityPrice")
 public class ActivityPrice {
 
     @Id

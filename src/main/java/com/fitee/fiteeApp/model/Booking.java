@@ -2,6 +2,7 @@ package com.fitee.fiteeApp.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,8 @@ import java.util.Date;
 @Entity()
 @Data
 @NoArgsConstructor
+@ToString
+@Table(name = "Fitee_Booking")
 public class Booking {
 
     @Id

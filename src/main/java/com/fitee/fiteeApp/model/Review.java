@@ -3,6 +3,7 @@ package com.fitee.fiteeApp.model;
 import com.fitee.fiteeApp.model.enums.ReviewRating;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,6 +11,8 @@ import javax.persistence.*;
 @Entity()
 @Data
 @NoArgsConstructor
+@ToString
+@Table(name = "Fitee_Review")
 public class Review {
 
     @Id

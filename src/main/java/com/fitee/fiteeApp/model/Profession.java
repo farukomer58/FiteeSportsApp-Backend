@@ -14,8 +14,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @ToString
+@Table(name = "Fitee_Profession")
 public class Profession {
-
     @Id
     @Column(name = "PROFESSION_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

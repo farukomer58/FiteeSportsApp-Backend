@@ -3,6 +3,7 @@ package com.fitee.fiteeApp.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.List;
 @Entity()
 @Data
 @NoArgsConstructor
+@ToString
+@Table(name = "Fitee_ChatGroup")
 public class ChatGroup {
 
     @Id
@@ -26,7 +29,7 @@ public class ChatGroup {
     private List<ChatMessage> groupMessages = new ArrayList<ChatMessage>();
 
     @ManyToMany()
-    @JoinTable(name = "CHAT_GROUP_MEMBER", joinColumns = @JoinColumn(name = "GROUP_ID"), inverseJoinColumns =
+    @JoinTable(name = "FITEE_CHAT_GROUP_MEMBER", joinColumns = @JoinColumn(name = "GROUP_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
     private List<User> groupMembers = new ArrayList<User>();

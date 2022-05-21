@@ -18,6 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@Table(name = "Fitee_Activity")
 public class Activity {
 
     @Id
@@ -57,7 +58,7 @@ public class Activity {
     private List<ActivityDate> activityDates = new ArrayList<>();
 
     @ManyToMany()
-    @JoinTable(name = "ACTIVITY_CATEGORY", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
+    @JoinTable(name = "FITEE_ACTIVITY_CATEGORY", joinColumns = @JoinColumn(name = "ACTIVITY_ID"), inverseJoinColumns =
     @JoinColumn(name = "CATEGORY_ID"))
 //    @JsonIgnore
     private List<Category> categories = new ArrayList<Category>();

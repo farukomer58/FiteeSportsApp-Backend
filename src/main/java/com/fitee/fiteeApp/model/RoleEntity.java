@@ -2,20 +2,19 @@ package com.fitee.fiteeApp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fitee.fiteeApp.model.enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity()
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "ROLE")
+@ToString
+@Table(name = "Fitee_RoleEntity")
 public class RoleEntity {
 
     @Id

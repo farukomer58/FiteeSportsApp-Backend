@@ -22,6 +22,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
+@Table(name = "Fitee_User")
 public class User {
 
     @Id
@@ -62,12 +64,12 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "ROLE_ID")
 //    @JsonIgnore
-    @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns =
+    @JoinTable(name = "FITEE_USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns =
     @JoinColumn(name = "ROLE_ID"))
     private List<RoleEntity> roles = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "USER_PROFESSION", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns =
+    @JoinTable(name = "FITEE_USER_PROFESSION", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns =
     @JoinColumn(name = "PROFESSION_ID"))
     private List<Profession> professions = new ArrayList<>();
 

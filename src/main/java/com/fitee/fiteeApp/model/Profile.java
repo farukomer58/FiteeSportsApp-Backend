@@ -2,12 +2,15 @@ package com.fitee.fiteeApp.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity()
 @Data
 @NoArgsConstructor
+@ToString
+@Table(name = "Fitee_Profile")
 public class Profile {
 
     @Id
