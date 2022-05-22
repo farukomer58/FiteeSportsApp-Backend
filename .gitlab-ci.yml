@@ -14,19 +14,3 @@ deploy_be:
   script:
     - git push --force heroku master
 
-deploy_fe:
-  stage: deploy
-  image: node:latest
-  tags:
-    - hva
-  only:
-    refs:
-      - master
-    changes:
-      - "[your-fe-app-folder]/**/*"
-  script:
-    - git remote rm heroku-fe-app || true
-    - git remote add heroku-fe-app https://heroku:$HEROKU_API_KEY@git.heroku.com/[your-heroku-fe-project-name].git || true
-    - git subtree split --prefix [your-fe-app-folder] -b splitting-fe
-    - git push --force heroku-fe-app splitting-fe:master
-    - git branch -D splitting-fe
