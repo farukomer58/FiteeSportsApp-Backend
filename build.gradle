@@ -9,7 +9,7 @@ buildscript {    // Configuration for building
 }
 
 plugins {
-    id 'com.google.cloud.tools.appengine' version '2.4.2'
+//    id 'com.google.cloud.tools.appengine' version '2.4.2'
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
@@ -34,23 +34,23 @@ repositories {  // repositories for Jar's you access in your code
     jcenter()
 }
 
-appengine {
-    deploy {
-        version = "GCLOUD_CONFIG"
-        projectId = "fiteebackendspring"
-    }
-}
+//appengine {
+//    deploy {
+//        version = "GCLOUD_CONFIG"
+//        projectId = "fiteebackendspring"
+//    }
+//}
 
 apply plugin: 'java'                              // standard Java tasks
 apply plugin: 'war'                               // standard Web Archive plugin
-apply plugin: 'com.google.cloud.tools.appengine'  // App Engine tasks
+// apply plugin: 'com.google.cloud.tools.appengine'  // App Engine tasks
 
 dependencies {
 //    implementation 'com.google.appengine:appengine-api-1.0-sdk:+'  // Latest App Engine Api's
 
-    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-
-    implementation 'jstl:jstl:1.2'
+//    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+//
+//    implementation 'jstl:jstl:1.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -73,4 +73,6 @@ dependencies {
 
 }
 
-
+bootJar {
+    launchScript()
+}
