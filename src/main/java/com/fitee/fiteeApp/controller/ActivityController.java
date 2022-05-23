@@ -66,7 +66,6 @@ public class ActivityController {
     /**
      * POST: Creates a new activity in the database.
      */
-    //@Secured(RoleType.SUPPLIER)
     @PostMapping("")
     public ResponseEntity<Activity> createActivity(@RequestBody ObjectNode queryMap) {
         final Activity savedActivity = activityService.save(queryMap);

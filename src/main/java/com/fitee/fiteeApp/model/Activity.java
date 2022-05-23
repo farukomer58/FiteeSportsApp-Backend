@@ -17,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "Fitee_Activity")
 public class Activity {
 

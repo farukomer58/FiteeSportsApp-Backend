@@ -22,7 +22,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "Fitee_User")
 public class User {
 

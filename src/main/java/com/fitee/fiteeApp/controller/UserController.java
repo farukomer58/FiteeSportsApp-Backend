@@ -60,7 +60,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-        System.out.println("Yo Registering");
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(location).body(userService.saveUser(user));
     }
