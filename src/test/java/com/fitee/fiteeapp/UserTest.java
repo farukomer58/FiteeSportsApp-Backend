@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -29,18 +31,18 @@ public class UserTest {
         // Act
         User user = userService.findById(1l);
         // Assert
-        assertEquals(defaultTestUserEmail,user.getEmail());
+        assertEquals(defaultTestUserEmail, user.getEmail());
     }
 
-//    @Test()
-//    public void loadNonExistingUserByEmail_ThrowException(){
-//        String nonExistingUserEmail = "nonExisting@email.com";
-//        try{
-//            final UserDetails userDetails = userService.loadUserByUsername(nonExistingUserEmail);
-//        } catch (UsernameNotFoundException e) {
-//            assertThrows(UsernameNotFoundException.class,()-> {throw new UsernameNotFoundException(e.getMessage()}));
-//        }
-//    }
+    @Test()
+    public void loadNonExistingUserByEmail_ThrowException() {
+        String nonExistingUserEmail = "nonExisting@email.com";
+        try {
+            userService.loadUserByUsername(nonExistingUserEmail);
+        } catch (Exception exception) {
+            assertEquals(exception.getClass(), UsernameNotFoundException.class);
+        }
+    }
 
     @Test
     @DirtiesContext // restores values
