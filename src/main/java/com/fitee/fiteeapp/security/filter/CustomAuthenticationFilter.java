@@ -62,7 +62,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         User user = (User) authResult.getPrincipal();
         com.fitee.fiteeapp.model.User fullUser = userService.getUserByMail(user.getUsername());
         Algorithm algorithm = Algorithm.HMAC256("SecretKey".getBytes());
-        String access_token = JWT.create()
+        String accessToken = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 50 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
@@ -75,24 +75,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         claims.put("roles",
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
-//        String tokenAlso =
-//                Jwts.builder().setClaims(claims).setSubject(user.getUsername()).setIssuedAt(new Date(System
-//                .currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-//                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
-
-
-        String refresh_token = JWT.create()
+        String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-//        response.setHeader("access_token", access_token);
-//        response.setHeader("refresh_token", refresh_token);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("user_id", String.valueOf(fullUser.getId()));
-        tokens.put("access_token", access_token);
-        tokens.put("refresh_token", refresh_token);
+        tokens.put("access_token", accessToken);
+        tokens.put("refresh_token", refreshToken);
         tokens.put("expiresIn", new Date(System.currentTimeMillis() + 50 * 60 * 1000).toString());
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);

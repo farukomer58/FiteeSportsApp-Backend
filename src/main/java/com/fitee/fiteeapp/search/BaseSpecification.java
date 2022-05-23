@@ -8,11 +8,11 @@ import javax.persistence.criteria.*;
 import java.util.*;
 
 public abstract class BaseSpecification<T> implements Specification<T>, QueryMap {
-    private final Map<String, String> queryMap;
+    public final Map<String, String> queryMap;
     public final List<Predicate> predicates;
     public final Map<String, TriConsumer<String, Root<T>, CriteriaBuilder>> customFilters;
 
-    public BaseSpecification(Map<String, String> queryMap) {
+    protected BaseSpecification(Map<String, String> queryMap) {
         this.queryMap = clean(queryMap);
         this.predicates = new ArrayList<>();
         customFilters = new HashMap<>();

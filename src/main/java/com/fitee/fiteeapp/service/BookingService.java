@@ -41,8 +41,6 @@ public class BookingService {
         return false;
     }
 
-    public boolean sendConfirmation(long userId) {
-        return false;
-    }
+
 
 }

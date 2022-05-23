@@ -38,15 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter =
                 new CustomAuthenticationFilter(authenticationManager(), userService);
-//        customAuthenticationFilter.setFilterProcessesUrl("api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
                 .antMatchers("/api/v*/users/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-//                .antMatchers(HttpMethod.GET,"/api/v*/users").hasRole("FREELANCER")
                 .anyRequest().authenticated(); // Any other request other then the above mentioned should be
-        // authenticated
         http.addFilterBefore(corsFilter, ChannelProcessingFilter.class);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilter(customAuthenticationFilter);

@@ -21,13 +21,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ExpiredTokenException.class)
     public ExceptionDto handleExpiredTokenException(ExpiredTokenException ex, HttpServletRequest request) {
-//        String message = "Token expired, please refresh in order to continue";
         return new ExceptionDto(HttpStatus.UNAUTHORIZED, ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ExceptionDto handleExistingResourceException(ResourceAlreadyExistsException ex, HttpServletRequest request) {
-//        String message = "An existing resource was found";
         return new ExceptionDto(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI());
     }
 }

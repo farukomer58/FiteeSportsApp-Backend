@@ -27,6 +27,6 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories") //, fetch = FetchType.EAGER
     @JsonIgnore
-    private List<Activity> activities = new ArrayList<Activity>();
+    private List<Activity> activities = new ArrayList<>();
 
 }

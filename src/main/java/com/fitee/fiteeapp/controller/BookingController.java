@@ -40,9 +40,6 @@ public class BookingController {
     public ResponseEntity<Object> createBooking(@RequestBody ObjectNode queryMap) throws MessagingException {
         final Booking booking = bookingService.createBooking(queryMap);
 
-        // String jwtToken = jwtProvider.createVerifyingToken(newUser.getUsername());
-        // userService.sendVerifyingEmail(user, jwtToken);
-
         // Current Request URI creation
         URI location =
                 ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/users/{id}").buildAndExpand(booking.getId()).toUri();

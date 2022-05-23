@@ -32,7 +32,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
            filterChain.doFilter(request,response);
        }else{
            String authorizationHeader = request.getHeader(AUTHORIZATION);
-           final Enumeration<String> headerNames = request.getHeaderNames();
            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                try {
                    String token = authorizationHeader.substring("Bearer ".length());
@@ -42,9 +41,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                    String email = decodedJWT.getSubject();
                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                   stream(roles).forEach(role -> {
-                       authorities.add(new SimpleGrantedAuthority(role));
-                   });
+                   stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                    filterChain.doFilter(request, response);
@@ -52,7 +49,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                    log.error("Error logging in: {}", exception.getMessage());
                    response.setHeader("error", exception.getMessage());
                    response.setStatus(FORBIDDEN.value());
-                   //response.sendError(FORBIDDEN.value());
                    Map<String, String> error = new HashMap<>();
                    error.put("error_message", exception.getMessage());
                    response.setContentType(APPLICATION_JSON_VALUE);

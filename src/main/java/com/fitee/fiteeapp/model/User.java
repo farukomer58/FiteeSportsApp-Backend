@@ -36,9 +36,6 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    //@Column(name = "LOCKED") // Account Status 0=unlocked, 1=locked
-    //private Boolean locked = false;
-
     @Column(name = "BIRTH_DATE")
     @CreationTimestamp                      // LocalDateTime when created
     private LocalDateTime birthDate;
@@ -68,22 +65,22 @@ public class User {
 
     @OneToMany(mappedBy = "messageOwner")
     @JsonIgnore
-    private List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @ManyToMany(mappedBy = "groupMembers") //, fetch = FetchType.EAGER
     @JsonIgnore
-    private List<ChatGroup> joinedChatGroups = new ArrayList<ChatGroup>();
+    private List<ChatGroup> joinedChatGroups = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
-    private List<Activity> ownedActivities = new ArrayList<Activity>();
+    private List<Activity> ownedActivities = new ArrayList<>();
 
     @ManyToMany(mappedBy = "participants") //, fetch = FetchType.EAGER
     @JsonIgnore
-    private List<ActivityDate> joinedActivities = new ArrayList<ActivityDate>();
+    private List<ActivityDate> joinedActivities = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookedBy")                       // One User Has / Can have Many Bookings
-    private List<Booking> bookings = new ArrayList<Booking>();
+    private List<Booking> bookings = new ArrayList<>();
 
 
     public User(String firstName, String lastName, String email, String password, String userRole) {
@@ -94,7 +91,9 @@ public class User {
         this.userRole = userRole;
     }
 
-    /** ----------------------------------------------------------------------------------------------- */
+    /**
+     * -----------------------------------------------------------------------------------------------
+     */
 
     public void joinGroup(ChatGroup chatGroup) {
         this.joinedChatGroups.add(chatGroup);
@@ -111,37 +110,8 @@ public class User {
         this.chatMessages.add(chatMessage);
         chatMessage.setMessageOwner(this);
         chatMessage.setChatGroup(receiver);
-//        chatMessage.setConversationId(this.getId(), receiver.getId());
     }
 
     /** ----------------------------------------------------------------------------------------------- */
 
-
-    /** Security User Config */
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        SimpleGrantedAuthority authority =
-//                new SimpleGrantedAuthority(this.getRole().getName().name());
-//        return Collections.singletonList(authority);
-//    }
-//    @Override
-//    public String getUsername() {
-//        return getEmail();
-//    }
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
 }

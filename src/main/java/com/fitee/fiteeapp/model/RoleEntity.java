@@ -20,10 +20,6 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "NAME")
-//    @Enumerated(EnumType.STRING)
-//    private UserRole name;
-
     @Column(name = "NAME")
     private String name;
 

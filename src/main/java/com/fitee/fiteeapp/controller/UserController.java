@@ -48,8 +48,6 @@ public class UserController {
     @Secured({"ROLE_FREELANCER", "FREELANCER"})
     @GetMapping("/get")
     public User getUserById(@RequestParam long id) {
-        System.out.println("Get me the userrrr with id: " + id);
-        final User byId = userService.findById(id);
         return userService.findById(id);
     }
 
@@ -81,13 +79,13 @@ public class UserController {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
-                String refresh_token = authorizationHeader.substring("Bearer ".length());
+                String refreshToken = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refresh_token);
+                DecodedJWT decodedJWT = verifier.verify(refreshToken);
                 String username = decodedJWT.getSubject();
                 User user = userService.getUserByMail(username);
-                String access_token = JWT.create()
+                String accessToken = JWT.create()
                         .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
@@ -95,14 +93,13 @@ public class UserController {
                                 user.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toList()))
                         .sign(algorithm);
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", access_token);
-                tokens.put("refresh_token", refresh_token);
+                tokens.put("access_token", accessToken);
+                tokens.put("refresh_token", refreshToken);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception exception) {
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());
-                //response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_message", exception.getMessage());
                 response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);

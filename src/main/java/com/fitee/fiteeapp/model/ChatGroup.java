@@ -26,13 +26,13 @@ public class ChatGroup {
     private Activity activity;
 
     @OneToMany(mappedBy = "chatGroup")
-    private List<ChatMessage> groupMessages = new ArrayList<ChatMessage>();
+    private List<ChatMessage> groupMessages = new ArrayList<>();
 
     @ManyToMany()
     @JoinTable(name = "FITEE_CHAT_GROUP_MEMBER", joinColumns = @JoinColumn(name = "GROUP_ID"), inverseJoinColumns =
     @JoinColumn(name = "PARTICIPANT_ID"))
     @JsonIgnore
-    private List<User> groupMembers = new ArrayList<User>();
+    private List<User> groupMembers = new ArrayList<>();
 
     public void addGroupMessage(ChatMessage groupMessage) {
         this.groupMessages.add(groupMessage);
