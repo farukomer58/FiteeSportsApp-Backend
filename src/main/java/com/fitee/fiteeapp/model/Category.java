@@ -29,4 +29,7 @@ public class Category {
     @JsonIgnore
     private List<Activity> activities = new ArrayList<>();
 
+    public Category(String category) {
+        this.category = category;
+    }
 }
