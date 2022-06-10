@@ -18,13 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/v1/bookings")
 public class BookingController {
-
     private final BookingService bookingService;
 
     /**
      * GET: Get all Bookings for user
-     *
-     * @return
+     * @return All Bookings for logged in user
      */
     @GetMapping("")
     public List<Booking> getAllBookings() {
@@ -32,9 +30,17 @@ public class BookingController {
     }
 
     /**
+     * GET: Get Booking By Id
+     * @return Found booking
+     */
+    @GetMapping("/{id}")
+    public Booking getBookingById(@PathVariable long id) {
+        return bookingService.getBookingById(id);
+    }
+
+    /**
      * POST: Save / Create booking to database and sends a verification email.
-     *
-     * @return
+     * @return Responseentity with created http status and URI to created booking
      */
     @PostMapping("")
     public ResponseEntity<Object> createBooking(@RequestBody ObjectNode queryMap) throws MessagingException {
@@ -42,14 +48,13 @@ public class BookingController {
 
         // Current Request URI creation
         URI location =
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/users/{id}").buildAndExpand(booking.getId()).toUri();
+                ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/bookings/{id}").buildAndExpand(booking.getId()).toUri();
         // Custom header
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", location.toString());
         // Response code CREATED with Custom body
         return new ResponseEntity<>(booking, headers, HttpStatus.CREATED);
     }
-
 
 
 }

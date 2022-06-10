@@ -37,23 +37,40 @@ public class ActivityService {
     private final UserService userService;
 
     /**
-     * Find a activity by ID
+     * Search activity by pageable
      *
      * @return The activities in pageable form
      */
     public Page<Activity> searchAll(Map<String, String> queryMap, Pageable pageable) {
         final Page<Activity> activityPage = activityRepository.findAll(new ActivitySpecification(queryMap), pageable);
-        return activityPage.map((Activity activity) -> activity);
+        return activityPage.map((Activity activity) -> {
+
+            StringBuilder relatedCategoriesString = new StringBuilder();
+            final List<Category> activityCategories = activity.getCategories();
+            System.out.println(activityCategories);
+            if (activityCategories.size() > 0) {
+                for (Category category : activityCategories) {
+                    relatedCategoriesString.append(category.getCategory() + ",");
+                }
+                relatedCategoriesString.deleteCharAt(relatedCategoriesString.length()-1 );
+                activity.setCategoryString(relatedCategoriesString.toString());
+            }
+            return activity;
+        });
     }
 
-
+    /**
+     * Get All activities made by logged in user
+     *
+     * @return List with own Activities
+     */
     public List<Activity> getOwnActivities() {
         final User currentUser = userService.getCurrentUser();
         return currentUser.getOwnedActivities();
     }
 
     /**
-     * Find a activity by ID
+     * Find an activity by ID
      *
      * @param id The id of the activity you want
      * @return The found activity
@@ -64,7 +81,7 @@ public class ActivityService {
     }
 
     /**
-     * Delete a Activity by ID
+     * Delete an Activity by ID
      *
      * @param id The id of the product
      */
@@ -74,7 +91,7 @@ public class ActivityService {
     }
 
     /**
-     * Create and Save the acitivity to the database,
+     * Create and Save the activity to the database,
      *
      * @param queryMap The JSON activityData received From the Frontend / User
      */
@@ -84,6 +101,8 @@ public class ActivityService {
 
         activity.setTitle(queryMap.get("title").asText());
         activity.setDescription(queryMap.get("description").asText());
+        activity.setActivityAddress(queryMap.get("activityAddress").asText());
+        activity.setCity(queryMap.get("city").asText());
         activity.setCreatedDate(LocalDateTime.now());
 
         final JsonNode allPrices = queryMap.get("prices");
@@ -129,6 +148,7 @@ public class ActivityService {
 
         User user = userService.getCurrentUser();
         activity.setOwner(user);
+        activity.setOwnerName(user.getFirstName() + " "+ user.getLastName());
         user.addOwnedActivities(activity);
 
         return activityRepository.save(activity);
@@ -193,6 +213,7 @@ public class ActivityService {
         // Return the updated Product
         return activityRepository.save(newUpdatedActivity);
     }
+
 
     /**
      * Create and Save the acitivity Date to the database and link with the acititvy,

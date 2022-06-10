@@ -18,11 +18,29 @@ public class BookingService {
     private final UserService userService;
     private final ActivityService activityService;
 
+
     /**
-     * Create and Save the product to the database, we also check for a Product Image if provided
-     * And also Product Discounnt if provided
-     *
-     * @param queryMap The JSON productData received From the Frontend / User
+     * Get All bookings for the signed-in User
+     * @return List with all the bookings made by the User
+     */
+    public List<Booking> getAllUserBookings() {
+        final User currentUser = userService.getCurrentUser();
+        return currentUser.getBookings();
+    }
+
+    /**
+     * Get Booking By Id
+     * @param id booking Id
+     * @return the found booking with the given id
+     */
+    public Booking getBookingById(long id) {
+        return bookingRepository.findById(id).get();
+    }
+
+    /**
+     * Create and Save a booking to the database
+     * @param queryMap  The JSON bookingData received From the Frontend / User with user and activity info
+     * @return The created Booking
      */
     public Booking createBooking(ObjectNode queryMap) {
 
@@ -32,25 +50,21 @@ public class BookingService {
         final Integer activityId = queryMap.get("activityId").asInt();
         final Integer userId = queryMap.get("userId").asInt();
 
-
-        // Link the tickets to user to the correct activity
-
         Booking booking = new Booking();
         booking.setQuantity(numberOfLessons);
-        booking.setBookedBy(userService.findById(userId));
-        booking.setBookedActivity(activityService.findById(activityId));
+
 //        booking.setTotalAmount();
 //        booking.setPaymentStatus();
 
-        return bookingRepository.save(booking);
-    }
+        // Link the tickets to user to the correct activity and User
+        booking.setBookedBy(userService.findById(userId));
+        booking.setBookedActivity(activityService.findById(activityId));
 
-    /**
-     * Get All bookings for the signed in User
-     */
-    public List<Booking> getAllUserBookings() {
-        final User currentUser = userService.getCurrentUser();
-        return currentUser.getBookings();
+        // Save Booking
+
+        // TODO: Send verification Mail
+
+        return bookingRepository.save(booking);
     }
 
     public boolean makePayment() {

@@ -33,12 +33,21 @@ public class Activity {
     @CreationTimestamp                                      // LocalDateTime when created
     private LocalDateTime createdDate;
 
-    @Column(name="COVER_IMAGE")
+    @Column(name = "COVER_IMAGE")
     private String coverImage;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "activity")
     // Add variable name of ChatGroup, ChatGroup is the owning side of relationship
     private ChatGroup chatGroup;
+
+    @Column(name = "OWNER_NAME")
+    private String ownerName;
+
+    @Column(name = "ACTIVITY_ADDRESS")
+    private String activityAddress;
+
+    @Column(name = "CITY")
+    private String city;
 
     @ManyToOne
     @JoinColumn(name = "OWNER_ID")
@@ -68,6 +77,8 @@ public class Activity {
     @OneToMany(mappedBy = "activity")                       // One Activity Has / Can have Many lOGS
     @JsonIgnore
     private List<LessonLog> logs = new ArrayList<>();
+
+    private String categoryString;
 
     public void addBooking(Booking booking) {
         this.bookings.add(booking);

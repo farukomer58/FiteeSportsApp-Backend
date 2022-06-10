@@ -45,6 +45,9 @@ public class FiteeAppApplication implements CommandLineRunner {
 
         root.put("title", "Default Activity Title");
         root.put("description", "Activity description default");
+        root.put("ownerName", "");
+        root.put("activityAddress", "");
+        root.put("city", "default");
         root.put("prices", (JsonNode) null);
         root.put("categories", (JsonNode) null);
         root.put("activityDates", (JsonNode) null);
