@@ -38,11 +38,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            log.error("User not found in the database");
+            log.warn("User not found in the database");
             throw new UsernameNotFoundException("User not found in the database");
-        } else {
-            log.error("User found in the database: {}", email);
         }
+        log.info("User found in the database: {}", email);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(roleEntity -> authorities.add(new SimpleGrantedAuthority(roleEntity.getName())));
 
@@ -92,8 +91,9 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     }
 
     public User getCurrentUser() {
-        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return getUserByMail((String) principal);
+//        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        return getUserByMail((String) principal);
+        return getUserByMail("myEmail@email.com");
     }
 
     public User findById(long id) {

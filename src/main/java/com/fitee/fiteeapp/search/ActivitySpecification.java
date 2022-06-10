@@ -18,8 +18,8 @@ public class ActivitySpecification extends BaseSpecification<Activity> {
     }
 
     private void customCategoryFilter(String attr, Root<Activity> rt, CriteriaBuilder cb) {
-        // http://localhost:8080/api/v1/products?category=2,5            --> multiple categories
-        // http://localhost:8080/api/v1/products?category=5              --> exact category
+        // http://localhost:8080/api/v1/activities?category=2,5            --> multiple categories
+        // http://localhost:8080/api/v1/activities?category=5              --> exact category
 
         final Predicate[] arr = Arrays.stream(queryMap.get(attr).split(","))
                 .map(v -> cb.equal(rt.get("productCategory"), Long.parseLong(v)))
@@ -28,9 +28,9 @@ public class ActivitySpecification extends BaseSpecification<Activity> {
     }
 
     private void customPriceFilter(String attr, Root<Activity> rt, CriteriaBuilder cb) {
-        // http://localhost:8080/api/v1/products?price=2.95-49.95       --> between prices
-        // http://localhost:8080/api/v1/products?price=2.95-            --> starting from price
-        // http://localhost:8080/api/v1/products?price=2.95             --> exact price
+        // http://localhost:8080/api/v1/activities?price=2.95-49.95       --> between prices
+        // http://localhost:8080/api/v1/activities?price=2.95-            --> starting from price
+        // http://localhost:8080/api/v1/activities?price=2.95             --> exact price
 
         String[] arr = queryMap.get(attr).split("-", 2);
         final BigDecimal lo = new BigDecimal(arr[0]);

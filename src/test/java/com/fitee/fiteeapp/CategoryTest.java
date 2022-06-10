@@ -19,5 +19,4 @@ public class CategoryTest {
         final Category save = categoryRepository.save(newCategory);
     }
 
-
 }

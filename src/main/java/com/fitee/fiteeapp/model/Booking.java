@@ -1,5 +1,6 @@
 package com.fitee.fiteeapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -20,7 +21,7 @@ public class Booking {
     private Long id;
 
     @Column(name = "QUANTITY")
-    private Long quantity; // Number of tickets/lessons purchased
+    private Integer quantity; // Number of tickets/lessons purchased
 
     @Column(name = "BOOKING_DATE")
     private Date createdDate = new Date(System.currentTimeMillis());
@@ -33,9 +34,11 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
+    @JsonIgnore
     private User bookedBy;
 
     @ManyToOne
     @JoinColumn(name = "ACTIVITY_ID")
+    @JsonIgnore
     private Activity bookedActivity;
 }

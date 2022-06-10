@@ -13,7 +13,9 @@ import com.fitee.fiteeapp.repository.CategoryRepository;
 import com.fitee.fiteeapp.search.ActivitySpecification;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -43,6 +45,7 @@ public class ActivityService {
         final Page<Activity> activityPage = activityRepository.findAll(new ActivitySpecification(queryMap), pageable);
         return activityPage.map((Activity activity) -> activity);
     }
+
 
     public List<Activity> getOwnActivities() {
         final User currentUser = userService.getCurrentUser();

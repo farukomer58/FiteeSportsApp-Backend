@@ -5,6 +5,7 @@ import com.fitee.fiteeapp.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+//@DataJpaTest // Runs test/application.properties database
 public class UserTest {
 
     @Autowired
@@ -37,11 +39,8 @@ public class UserTest {
     @Test()
     public void loadNonExistingUserByEmail_ThrowException() {
         String nonExistingUserEmail = "nonExisting@email.com";
-        try {
-            userService.loadUserByUsername(nonExistingUserEmail);
-        } catch (Exception exception) {
-            assertEquals(exception.getClass(), UsernameNotFoundException.class);
-        }
+        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(nonExistingUserEmail));
+//            assertEquals(exception.getClass(), UsernameNotFoundException.class);
     }
 
     @Test

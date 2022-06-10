@@ -36,7 +36,7 @@ public class BookingController {
      *
      * @return
      */
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Object> createBooking(@RequestBody ObjectNode queryMap) throws MessagingException {
         final Booking booking = bookingService.createBooking(queryMap);
 

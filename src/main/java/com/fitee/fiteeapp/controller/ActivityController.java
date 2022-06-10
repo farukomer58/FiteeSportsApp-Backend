@@ -6,13 +6,17 @@ import com.fitee.fiteeapp.model.Activity;
 import com.fitee.fiteeapp.model.ActivityDate;
 import com.fitee.fiteeapp.model.Category;
 import com.fitee.fiteeapp.model.User;
+import com.fitee.fiteeapp.repository.ActivityRepository;
 import com.fitee.fiteeapp.repository.CategoryRepository;
 import com.fitee.fiteeapp.service.ActivityService;
 import com.fitee.fiteeapp.service.CategoryService;
 import com.fitee.fiteeapp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,6 +31,7 @@ import java.util.Map;
 public class ActivityController {
 
     private final ActivityService activityService;
+    private final ActivityRepository activityRepository;
     private final CategoryService categoryService;
     private final UserService userService;
     private final CategoryRepository categoryRepository;
@@ -36,9 +41,7 @@ public class ActivityController {
      */
     @GetMapping("")
     public Page<Activity> search(@RequestParam(required = false) Map<String, String> queryMap,
-                                 @RequestParam(value = "page", required = false) Integer page,
-                                 @RequestParam(value = "size", required = false) Integer size,
-                                 Pageable pageable) {
+                                 @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC, size = 15) Pageable pageable) {
         return activityService.searchAll(queryMap, pageable);
     }
 

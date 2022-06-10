@@ -29,7 +29,6 @@ public class UserControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;  // Used for doing requests to end-points
 
-
     @Test
     public void registerUser() throws URISyntaxException {
 
