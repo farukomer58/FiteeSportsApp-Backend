@@ -135,7 +135,7 @@ public class ActivityService {
         if (!activityDates.isNull()) {
             for (JsonNode activityDate : activityDates) {
                 ActivityDate activityDateObject = new ActivityDate();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
                 LocalDateTime dateTime = LocalDateTime.parse(activityDate.get("date").asText(), formatter);
                 activityDateObject.setDate(dateTime);
                 activityDateObject.setMaxParticipants(activityDate.get("maxParticipants").asInt());
@@ -219,7 +219,7 @@ public class ActivityService {
 
             for (JsonNode activityDate : queryMap.get("activityDates")) {
                 ActivityDate activityDateObject = new ActivityDate();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
                 LocalDateTime dateTime = LocalDateTime.parse(activityDate.get("date").asText(), formatter);
                 activityDateObject.setDate(dateTime);
                 activityDateObject.setMaxParticipants(activityDate.get("maxParticipants").asInt());
@@ -246,7 +246,7 @@ public class ActivityService {
         Activity activity = activityRepository.findById(activityId).get();
         ActivityDate activityDate = new ActivityDate();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(activityDateDto.getDate(), formatter);
         activityDate.setDate(dateTime);
         activityDate.setMaxParticipants(activityDateDto.getMaxParticipant());
