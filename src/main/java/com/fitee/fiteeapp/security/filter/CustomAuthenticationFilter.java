@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,9 +63,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         User user = (User) authResult.getPrincipal();
         com.fitee.fiteeapp.model.User fullUser = userService.getUserByMail(user.getUsername());
         Algorithm algorithm = Algorithm.HMAC256("SecretKey".getBytes());
+        final Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 30);
+        final Date expireDate= calendar.getTime();
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 50 * 60 * 1000))
+                .withExpiresAt(expireDate)
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles",
                         user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
@@ -84,7 +88,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("user_id", String.valueOf(fullUser.getId()));
         tokens.put("access_token", accessToken);
         tokens.put("refresh_token", refreshToken);
-        tokens.put("expiresIn", new Date(System.currentTimeMillis() + 50 * 60 * 1000).toString());
+        tokens.put("expiresIn", expireDate.toString());
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }

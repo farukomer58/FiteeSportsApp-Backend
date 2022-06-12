@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class BookingService {
 
     /**
      * Get All bookings for the signed-in User
+     *
      * @return List with all the bookings made by the User
      */
     public List<Booking> getAllUserBookings() {
@@ -30,6 +32,7 @@ public class BookingService {
 
     /**
      * Get Booking By Id
+     *
      * @param id booking Id
      * @return the found booking with the given id
      */
@@ -39,7 +42,8 @@ public class BookingService {
 
     /**
      * Create and Save a booking to the database
-     * @param queryMap  The JSON bookingData received From the Frontend / User with user and activity info
+     *
+     * @param queryMap The JSON bookingData received From the Frontend / User with user and activity info
      * @return The created Booking
      */
     public Booking createBooking(ObjectNode queryMap) {
@@ -52,6 +56,7 @@ public class BookingService {
 
         Booking booking = new Booking();
         booking.setQuantity(numberOfLessons);
+        booking.setRemainingAmount(numberOfLessons);
 
 //        booking.setTotalAmount();
 //        booking.setPaymentStatus();
@@ -71,5 +76,24 @@ public class BookingService {
         return false;
     }
 
+
+    public Booking checkIfUserHasTicket(long activityId) {
+
+        final Optional<Booking> bookingByBookedByAndBookedActivity =
+                bookingRepository.findBookingByBookedByAndBookedActivity(userService.getCurrentUser(),
+                        activityService.findById(activityId));
+        System.out.println(bookingByBookedByAndBookedActivity);
+
+        if (bookingByBookedByAndBookedActivity.isEmpty()) {
+            return null;
+        }
+        if (bookingByBookedByAndBookedActivity.get().getRemainingAmount() <= 0) {
+            return null;
+        }
+
+        return bookingByBookedByAndBookedActivity.get();
+    }
+
+    // TODO: Create endpoint to accept activityDate and bookingDetails to store changes
 
 }

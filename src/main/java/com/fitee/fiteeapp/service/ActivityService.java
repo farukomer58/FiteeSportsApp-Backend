@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
@@ -138,6 +139,7 @@ public class ActivityService {
                 LocalDateTime dateTime = LocalDateTime.parse(activityDate.get("date").asText(), formatter);
                 activityDateObject.setDate(dateTime);
                 activityDateObject.setMaxParticipants(activityDate.get("maxParticipants").asInt());
+                activityDateObject.setCurrentParticipants(0);
                 final ActivityDate savedActivityDate = activityDateRepository.save(activityDateObject);
 
                 activity.getActivityDates().add(savedActivityDate);
@@ -168,10 +170,17 @@ public class ActivityService {
 
         newUpdatedActivity.setTitle(queryMap.get("title").asText());
         newUpdatedActivity.setDescription(queryMap.get("description").asText());
-        newUpdatedActivity.setCreatedDate(LocalDateTime.now());
+        newUpdatedActivity.setActivityAddress(queryMap.get("activityAddress").asText());
+        newUpdatedActivity.setCity(queryMap.get("city").asText());
 
         final JsonNode allPrices = queryMap.get("prices");
         if (!allPrices.isNull()) {
+
+            for (ActivityPrice price: newUpdatedActivity.getActivityPrices()){
+                activityPriceRepository.delete(price);
+            }
+            newUpdatedActivity.setActivityPrices(new ArrayList<>());
+
             for (JsonNode prices : allPrices) {
 
                 final JsonNode lessons = prices.get("lessons");
@@ -188,6 +197,12 @@ public class ActivityService {
         }
 
         if (!queryMap.get("categories").isNull()) {
+
+            for (Category category: newUpdatedActivity.getCategories()){
+                categoryRepository.delete(category);
+            }
+            newUpdatedActivity.setCategories(new ArrayList<>());
+
             for (JsonNode category : queryMap.get("categories")) {
                 final Category categoryToAdd = categoryRepository.findById(category.asLong()).orElseThrow();
                 newUpdatedActivity.getCategories().add(categoryToAdd);
@@ -196,6 +211,12 @@ public class ActivityService {
         }
 
         if (!queryMap.get("activityDates").isNull()) {
+
+            for (ActivityDate date: newUpdatedActivity.getActivityDates()){
+                activityDateRepository.delete(date);
+            }
+            newUpdatedActivity.setActivityDates(new ArrayList<>());
+
             for (JsonNode activityDate : queryMap.get("activityDates")) {
                 ActivityDate activityDateObject = new ActivityDate();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

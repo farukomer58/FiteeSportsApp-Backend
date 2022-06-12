@@ -32,6 +32,9 @@ public class Booking {
     @Column(name="TOTAL_AMOUNT")
     private float totalAmount;
 
+    @Column(name="REMAINING_AMOUNT")
+    private float remainingAmount;
+
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     @JsonIgnore
@@ -41,4 +44,5 @@ public class Booking {
     @JoinColumn(name = "ACTIVITY_ID")
     @JsonIgnore
     private Activity bookedActivity;
+
 }

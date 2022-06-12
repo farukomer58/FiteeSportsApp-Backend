@@ -34,6 +34,9 @@ public class ActivityDate {
     @JoinColumn(name = "ACTIVITY_ID")
     private Activity activity;
 
+    @JoinColumn(name = "CURRENT_PARTICIPANTS")
+    private Integer currentParticipants;
+
     @JoinColumn(name = "MAX_PARTICIPANTS")
     private Integer maxParticipants;
 

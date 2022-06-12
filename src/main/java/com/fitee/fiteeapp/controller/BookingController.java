@@ -22,6 +22,7 @@ public class BookingController {
 
     /**
      * GET: Get all Bookings for user
+     *
      * @return All Bookings for logged in user
      */
     @GetMapping("")
@@ -31,6 +32,7 @@ public class BookingController {
 
     /**
      * GET: Get Booking By Id
+     *
      * @return Found booking
      */
     @GetMapping("/{id}")
@@ -40,6 +42,7 @@ public class BookingController {
 
     /**
      * POST: Save / Create booking to database and sends a verification email.
+     *
      * @return Responseentity with created http status and URI to created booking
      */
     @PostMapping("")
@@ -56,5 +59,10 @@ public class BookingController {
         return new ResponseEntity<>(booking, headers, HttpStatus.CREATED);
     }
 
+    @GetMapping("/validate/{activityId}")
+    public Booking validateUserTickets(@PathVariable long activityId) {
+        final Booking booking = bookingService.checkIfUserHasTicket(activityId);
+        return booking;
+    }
 
 }
