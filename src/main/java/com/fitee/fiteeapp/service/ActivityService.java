@@ -165,7 +165,7 @@ public class ActivityService {
      */
     public Activity update(long id, ObjectNode queryMap) {
 
-        // Find the product to update with the ID
+        // Find the activity to update with the ID
         Activity newUpdatedActivity = activityRepository.findById(id).get();
 
         newUpdatedActivity.setTitle(queryMap.get("title").asText());

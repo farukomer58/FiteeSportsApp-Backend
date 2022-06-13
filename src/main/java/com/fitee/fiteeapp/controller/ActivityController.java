@@ -78,8 +78,8 @@ public class ActivityController {
      */
     //@Secured(RoleType.SUPPLIER)
     @PutMapping("/{id}")
-    public void update(@PathVariable long id, @RequestBody ObjectNode product) {
-        activityService.update(id, product);
+    public void update(@PathVariable long id, @RequestBody ObjectNode activity) {
+        activityService.update(id, activity);
     }
 
     /**

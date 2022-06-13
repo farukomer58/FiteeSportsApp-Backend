@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fitee.fiteeapp.dto.RoleToUserForm;
 import com.fitee.fiteeapp.model.RoleEntity;
 import com.fitee.fiteeapp.model.User;
@@ -61,6 +62,14 @@ public class UserController {
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(location).body(userService.saveUser(user));
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable long id,@RequestBody ObjectNode queryMap) {
+        User updatedUser = userService.updateUser(id, queryMap);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{id}").buildAndExpand(updatedUser.getId()).toUri();
+        return ResponseEntity.created(location).body(updatedUser);
+    }
+
     @PostMapping("/role/save")
     public ResponseEntity<RoleEntity> saveRole(@RequestBody RoleEntity role) {
         URI location =

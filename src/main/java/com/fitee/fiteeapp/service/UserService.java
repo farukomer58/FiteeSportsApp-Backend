@@ -1,6 +1,8 @@
 package com.fitee.fiteeapp.service;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fitee.fiteeapp.exception.ResourceAlreadyExistsException;
+import com.fitee.fiteeapp.model.Activity;
 import com.fitee.fiteeapp.model.RoleEntity;
 import com.fitee.fiteeapp.model.User;
 import com.fitee.fiteeapp.repository.RoleRepository;
@@ -107,5 +109,17 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public User updateUser(long id,ObjectNode queryMap) {
+
+        // Find the product to update with the ID
+        User userToUpdate = userRepository.findById(id).get();
+
+        userToUpdate.setFirstName(queryMap.get("firstName").asText());
+        userToUpdate.setLastName(queryMap.get("lastName").asText());
+
+        // Return the updated Product
+        return userRepository.save(userToUpdate);
     }
 }
