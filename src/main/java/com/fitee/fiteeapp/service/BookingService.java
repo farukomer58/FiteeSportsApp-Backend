@@ -51,12 +51,14 @@ public class BookingService {
         System.out.println(queryMap);
 
         final Integer numberOfLessons = queryMap.get("numberOfLessons").asInt();
+        final Double totalAmount = queryMap.get("totalAmount").asDouble();
         final Integer activityId = queryMap.get("activityId").asInt();
         final Integer userId = queryMap.get("userId").asInt();
 
         Booking booking = new Booking();
         booking.setQuantity(numberOfLessons);
         booking.setRemainingAmount(numberOfLessons);
+    booking.setTotalAmount(totalAmount);
 
 //        booking.setTotalAmount();
 //        booking.setPaymentStatus();

@@ -30,7 +30,7 @@ public class Booking {
     private String paymentStatus;
 
     @Column(name="TOTAL_AMOUNT")
-    private float totalAmount;
+    private Double totalAmount;
 
     @Column(name="REMAINING_AMOUNT")
     private float remainingAmount;
